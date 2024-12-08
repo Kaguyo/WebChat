@@ -8,3 +8,4 @@ if (kaguyo = 1) {
 }else{
     console.log("Kaguyo não é 1")
 }
+console.log("abdsdjklns");
