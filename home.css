@@ -1,3 +1,9 @@
+.no-select {
+    -webkit-user-select: none; /* Para navegadores Webkit/Blink */
+    -moz-user-select: none;    /* Para Firefox */
+    -ms-user-select: none;     /* Para navegadores baseados em IE/Edge */
+    user-select: none;         /* Valor padrão */
+}
 #div1 {
     position: absolute;
     background-color: rgb(240, 230, 189);
@@ -21,7 +27,35 @@
     transform: translate(-50%, -50%);
     width: 598px;
 }
-#submitMessage {
+#input {
+    font-size: 24px;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    background-color: rgb(27, 27, 32);
+    border-radius: 12px;
+    height: 64px;
+    left: 50%;
+    top: 49%;
+    transform: translate(-50%, -50%);
+    width: 590px;
+}
+#chatHolder {
+    position: absolute;
+    height: 90%;
+    width: 98%;
+    left: 50%;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    transform: translate(-50%);
+}
+#typeMessage {
+    left: 2%;
+    font-size: 24px;
+    position: absolute;
+    color: white;
+    pointer-events: none;
+}
+#fileMessage { /* Botao Vermelho de envio */
     position: absolute;
     border: 2px solid red;
     height: 40px;
@@ -29,19 +63,29 @@
     left: 90%;
     transform: translate(-120%);
 }
-#fileMessage {
+#cameraPhoto {
     position: absolute;
-    border: 2px solid rgb(25, 0, 255);
+    border: 2px solid red;
+    height: 40px;
+    width: 45px;
+    left: 81.5%;
+    transform: translate(-120%);
+}
+#recordAudio {
+    position: absolute;
+    /* border: 2px solid rgb(25, 0, 255); */
+    height: 40px;
+    width: 45px;
+    left: 99%;
+    transform: translate(-140%, -8%);
+}
+#submitMessage { /* Botao Azul de arquivo */
+    position: absolute;
+    /* border: 2px solid rgb(25, 0, 255); */
     height: 40px;
     width: 45px;
     left: 100%;
     transform: translate(-140%);
-}
-#typeMessage {
-    left: 3%;
-    font-size: 24px;
-    position: relative;
-    color: white;
 }
 #titulo {
     position: relative;

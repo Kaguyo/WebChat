@@ -8,13 +8,21 @@
 </head>
 <body>
     <div id="div1">
-        <div id="div2">
-            <label for="input" id="typeMessage">Digite uma mensagem...</label>
-            <div id="submitMessage">
-
+        <div id="chatHolder"></div>
+        <div id="div2" onclick="switchLabel()">
+            <input type="text" id="input">
+            <label for="input" id="typeMessage" class="no-select">Digite uma mensagem...</label>
+            <div id="submitMessage" style="visibility: hidden;">
+                <img src="send.png" alt="send" class="send-icon" width="40" height="40">
             </div>
             <div id="fileMessage">
-
+                <img src="Files.png" alt="file send" width="30" height="30">
+            </div>
+            <div id="recordAudio" style="visibility: visible;">
+                <img src="Audio Record.png" alt="record audio" class="audio-icon" width="50" height="50">
+            </div>
+            <div id="cameraPhoto">
+                <img src="Camera.png" alt="file send" width="43" height="40">
             </div>
         </div>
     </div>
