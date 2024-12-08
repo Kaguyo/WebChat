@@ -5,7 +5,8 @@ let input = document.getElementById("input");
 let characterCount = 0;
 
 let whiteSpace = false;
-
+let mostrarBotaoDeEnviar = false;
+let mensagemCode = [];
 input.addEventListener('input', switchIcon);
 input.addEventListener('keydown', (event) => {
     if (event.code == "Backspace" && characterCount >= 1){
@@ -16,6 +17,9 @@ input.addEventListener('keydown', (event) => {
         characterCount++;
     } if (characterCount == 0){
         whiteSpace = false;
+    } mensagemCode += event.code;
+    if (mensagemCode[characterCount-1] != "Space"){
+        mostrarBotaoDeEnviar = true;
     }
 });
 function switchIcon(e){
