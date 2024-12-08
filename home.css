@@ -1,7 +1,3 @@
-body {
-    background-color: rgb(5, 43, 33);
-    height: 1080px
-}
 .no-select {
     -webkit-user-select: none; /* Para navegadores Webkit/Blink */
     -moz-user-select: none;    /* Para Firefox */
