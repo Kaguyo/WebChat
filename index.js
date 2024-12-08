@@ -20,6 +20,7 @@ input.addEventListener('keydown', (event) => {
     } mensagemCode += event.code;
     if (mensagemCode[characterCount-1] != "Space"){
         mostrarBotaoDeEnviar = true;
+        remindNonWhiteSpice = characterCount-1;
     }
 });
 function switchIcon(e){
