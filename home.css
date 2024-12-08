@@ -1,7 +1,26 @@
 #div1 {
-    border-radius: 2px;
-    color: red;
-    background-color: red;
-    height: 200px;
-    width: 200px;
+    position: absolute;
+    background-color: rgb(240, 230, 189);
+    height: 750px;
+    width: 600px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 12px;
+    opacity: 0.2;
+    box-shadow: 3px 3px 100px black;;
+}
+#div2 {
+    position: relative;
+    background-color: rgb(47, 47, 75);
+    height: 150px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    top: 81.5%;
+    width: 600px;
+}
+#titulo {
+    position: absolute;
+    color: green;
+    
+    
 }
