@@ -2,10 +2,19 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
+const PORT = 2000;
 
 const server = http.createServer((req, res) => {
-    let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+    let filePath;
+    let getIn = true;
+    if (req.url === '/') {
+        filePath = path.join(__dirname, 'index.html');
+    } else if (req.url === '/login') {
+        filePath = path.join(__dirname, 'login.html');
+    } else {
+        filePath = path.join(__dirname, req.url);
+        getIn = false;
+    }
     const extname = path.extname(filePath);
 
     const traduzirContentType = {
