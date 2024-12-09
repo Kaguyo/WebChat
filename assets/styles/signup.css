@@ -1,0 +1,9 @@
+#div1 {
+    width: 250px;
+    display: grid;
+    height: 200px;
+    
+} 
+#CriarContaBtn {
+    top: 50%;
+}

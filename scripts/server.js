@@ -9,6 +9,8 @@ const server = http.createServer((req, res) => {
     
     if (req.url === '/') {
         filePath = path.join(__dirname, '..', 'views', 'index.html');
+    } else if (req.url === '/signup'){
+        filePath = path.join(__dirname, '..', 'views', 'signup.html')
     } else if (req.url === '/login') {
         filePath = path.join(__dirname, '..', 'views', 'login.html');
     } else if (req.url.startsWith('/assets/')) {
@@ -18,7 +20,7 @@ const server = http.createServer((req, res) => {
     } else {
         filePath = path.join(__dirname, '..', 'views', req.url);
     }
-    console.log(req.url);
+    // console.log(req.url);
 
     const extname = path.extname(filePath);
 

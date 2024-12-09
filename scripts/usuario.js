@@ -1,24 +1,14 @@
 class Usuario {
-     constructor(name, number, pfp, bio){
-         this.name = name;
-         this.number = number;
-         this.pfp = pfp;
-         this.bio = bio;
-     }
+    constructor(nome, idade, pfp, bio){
+        this.nome = nome;
+        this.idade = idade;
+        this.pfp = pfp;
+        this.bio = bio;
+    }   
+}
 
-     get nomeUsuario(){
-         return this.name;
-     }
-
-     set nomeUsuario(nomeUsuario){
-         this.nome = nomeUsuario;
-     }
-
-     get numeroUsuario(){
-         return this.number
-     }
-
-     set numeroUsuario(numeroUsuario){
-         this.numero = numeroUsuario;
-     }
- }
+class Conta extends Usuario {
+    constructor(number){
+        this.number = number
+    }
+}
