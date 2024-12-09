@@ -17,10 +17,12 @@ const server = http.createServer((req, res) => {
         filePath = path.join(__dirname, '..', req.url);
     } else if (req.url === '/scripts/index.js'){
         filePath = path.join(__dirname, 'index.js');
+    } else if (req.url === '/scripts/signUp.js'){ // if adicionado
+        filePath = path.join(__dirname, 'signUp.js');
     } else {
         filePath = path.join(__dirname, '..', 'views', req.url);
     }
-    // console.log(req.url);
+    console.log(req.url);
 
     const extname = path.extname(filePath);
 

@@ -1,4 +1,3 @@
-function (cadrasto){
-    const con1 = new Conta()
-
+function Cadastro(){
+    console.log("hello");
 }
