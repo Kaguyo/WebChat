@@ -7,8 +7,6 @@
 #div1 {
     position: absolute;
     padding: 1rem;
-    background-image: url(background.jpg);
-    background-size: 150%;
     height: 750px;
     width: 600px;
     left: 50%;
@@ -16,6 +14,7 @@
     border-radius: 12px;
     opacity: 1;
     box-shadow: 2px 2px 8px rgb(143, 143, 143);
+    background-color: rgba(255, 250, 198, 0.397);
 }
 #div2 {
     position: relative;
@@ -89,7 +88,7 @@
     width: 200px;
     left: 50%;
     transform: translate(-50%);
-    color: white;
+    color: rgb(64, 223, 1);
     border: 0.8rem solid transparent;
 }
 

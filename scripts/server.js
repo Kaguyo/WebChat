@@ -8,12 +8,17 @@ const server = http.createServer((req, res) => {
     let filePath;
     
     if (req.url === '/') {
-        filePath = path.join(__dirname, 'index.html');
+        filePath = path.join(__dirname, '..', 'views', 'index.html');
     } else if (req.url === '/login') {
-        filePath = path.join(__dirname, 'login.html');
+        filePath = path.join(__dirname, '..', 'views', 'login.html');
+    } else if (req.url.startsWith('/assets/')) {
+        filePath = path.join(__dirname, '..', req.url);
+    } else if (req.url === '/scripts/index.js'){
+        filePath = path.join(__dirname, 'index.js');
     } else {
-        filePath = path.join(__dirname, req.url);
+        filePath = path.join(__dirname, '..', 'views', req.url);
     }
+    console.log(req.url);
 
     const extname = path.extname(filePath);
 
@@ -36,7 +41,6 @@ const server = http.createServer((req, res) => {
         } else {
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(data);
-            console.log(contentType)
         }
     });
 });
