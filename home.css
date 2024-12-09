@@ -29,7 +29,7 @@
     transform: translate(-50%, -50%);
     width: 598px;
 }
-#input {
+#myInput {
     font-size: 24px;
     position: absolute;
     color: rgb(255, 255, 255);
@@ -49,13 +49,6 @@
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     transform: translate(-50%);
-}
-#typeMessage {
-    left: 2%;
-    font-size: 24px;
-    position: absolute;
-    color: white;
-    pointer-events: none;
 }
 #fileMessage { /* Botao Vermelho de envio */
     position: absolute;
