@@ -19,8 +19,8 @@ const server = http.createServer((req, res) => {
         filePath = path.join(__dirname, 'index.js');
     } else if (req.url === '/scripts/signUp.js'){ // if adicionado
         filePath = path.join(__dirname, 'signUp.js');
-    } else {
-        filePath = path.join(__dirname, '..', 'views', req.url);
+    } else { // else que vai levar pra pagina de erro que foi adicionada em views
+        filePath = path.join(__dirname, '..', 'views', 'error.html');
     }
     console.log(req.url);
 
