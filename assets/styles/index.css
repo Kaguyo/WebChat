@@ -56,7 +56,9 @@
     width: 45px;
     left: 90%;
     transform: translate(-120%);
-}
+} #fileMessage:hover {
+    cursor: pointer;
+}   
 #cameraPhoto {
     position: absolute;
     /* border: 2px solid red; */
@@ -64,7 +66,9 @@
     width: 45px;
     left: 81.5%;
     transform: translate(-120%);
-}
+} #cameraPhoto:hover {
+    cursor: pointer;
+}   
 #recordAudio {
     position: absolute;
     /* border: 2px solid rgb(25, 0, 255); */
@@ -72,7 +76,9 @@
     width: 45px;
     left: 99%;
     transform: translate(-140%, -8%);
-}
+} #recordAudio:hover {
+    cursor: pointer;
+}   
 #submitMessage { /* Botao Azul de arquivo */
     position: absolute;
     /* border: 2px solid rgb(25, 0, 255); */
@@ -80,7 +86,9 @@
     width: 45px;
     left: 100%;
     transform: translate(-140%);
-}
+} #submitMessage:hover {
+    cursor: pointer;
+}   
 #titulo {
     position: relative;
     padding: 2px;
