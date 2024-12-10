@@ -9,17 +9,23 @@ const server = http.createServer((req, res) => {
     
     if (req.url === '/') {
         filePath = path.join(__dirname, '..', 'views', 'index.html');
+
     } else if (req.url === '/signup'){
         filePath = path.join(__dirname, '..', 'views', 'signup.html')
+
     } else if (req.url === '/login') {
         filePath = path.join(__dirname, '..', 'views', 'login.html');
-    } else if (req.url.startsWith('/assets/')) {
+
+    } else if (req.url.startsWith('/assets/')){
         filePath = path.join(__dirname, '..', req.url);
+
     } else if (req.url === '/scripts/index.js'){
         filePath = path.join(__dirname, 'index.js');
-    } else if (req.url === '/scripts/signUp.js'){ // if adicionado
+
+    } else if (req.url === '/scripts/signUp.js'){
         filePath = path.join(__dirname, 'signUp.js');
-    } else { // else que vai levar pra pagina de erro que foi adicionada em views
+
+    } else { // else que vai levar pra pagina de erro existente em views
         filePath = path.join(__dirname, '..', 'views', 'error.html');
     }
     console.log(req.url);
