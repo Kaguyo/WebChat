@@ -24,7 +24,7 @@ password2.addEventListener('input', (event) => {
 
 CadrastroBtn.onclick = function (){
     try {
-        const usuario = new Usuario(Usuario.usersCount, _username, _phoneNumber, _password, _password2);
+        const usuario = new Usuario(Usuario.usersCount++, _username, _phoneNumber, _password, _password2);
         const variavelUsuario = `usuario_${Usuario.usersCount++}`;
         const usuarioIdentificado = {
             [variavelUsuario]: usuario
