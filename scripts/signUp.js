@@ -23,7 +23,29 @@ password2.addEventListener('input', (event) => {
 });
 
 CadrastroBtn.onclick = function (){
-    Usuario.usersCount ++;
-    const usuario = new Usuario(Usuario.usersCount, _username, _phoneNumber, _password, _password2);
-    console.log(usuario);
+    try {
+        const usuario = new Usuario(Usuario.usersCount, _username, _phoneNumber, _password, _password2);
+        const variavelUsuario = `usuario_${Usuario.usersCount++}`;
+        const usuarioIdentificado = {
+            [variavelUsuario]: usuario
+        }
+        const jsonUsuario = JSON.stringify(usuarioIdentificado);
+        fetch("http://localhost:5000/ProcessUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonUsuario
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Dados recebidos:", data)
+        })
+        .catch(error => {
+            console.log("Erro ao enviar dados:", error);
+        });
+    } catch(err){
+        console.log(`Error. User wasn't created. Error: ${err.message}`);
+        console.log(`Error details: ${err}`);
+    }
 }
