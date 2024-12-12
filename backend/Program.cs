@@ -16,7 +16,7 @@ namespace backend
 
             Console.WriteLine("Servidor iniciado... Aguardando requisições.");
 
-            while (true)
+            while (true) // Test
             {
                 try
                 {
