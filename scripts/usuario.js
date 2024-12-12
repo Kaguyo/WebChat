@@ -1,14 +1,10 @@
 class Usuario {
-    constructor(nome, idade, pfp, bio){
+    constructor(id, nome, number, password, password2){
+        this.id = id;
         this.nome = nome;
-        this.idade = idade;
-        this.pfp = pfp;
-        this.bio = bio;
-    }   
-}
-
-class Conta extends Usuario {
-    constructor(number){
-        this.number = number
+        this.number = number;
+        this.password = password;
+        this.password2 = password2;
     }
+    static usersCount = 0;   
 }

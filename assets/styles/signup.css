@@ -19,7 +19,7 @@
     left: 50%;
     transform: translate(-50%);
 }
-#signupInput {
+.signupInput {
     height: 30px;
     font-size: 20px;
 }

@@ -9,16 +9,17 @@
 <body>
     <div id="div1">
         <h1 id="h1CriarConta">Criar nova conta</h1>
-        <input type="text" id="signupInput" autocomplete="off" placeholder="Nome de Usuário">
-        <input type="text" id="signupInput" autocomplete="off" placeholder="N° Telefone">
-        <input type="text" id="signupInput" autocomplete="off" placeholder="Senha">
-        <input type="text" id="signupInput" autocomplete="off" placeholder="Repita sua Senha">
+        <input type="text" id="username" class="signupInput" autocomplete="off" placeholder="Nome de Usuário">
+        <input type="text" id="phoneNumber" class="signupInput" autocomplete="off" placeholder="N° Telefone">
+        <input type="text" id="password" class="signupInput" autocomplete="off" placeholder="Senha">
+        <input type="text" id="password2" class="signupInput" autocomplete="off" placeholder="Repita sua Senha">
         <div id="div2">
-            <button id="CriarContaBtn" onclick="Cadastro()">Criar Conta</button>
+            <button id="CriarContaBtn">Criar Conta</button>
             <button id="PossuiContaBtn">Já possui uma Conta?</button>
         </div>
     </div>
     
+    <script src="/scripts/usuario.js"></script>
     <script src="/scripts/signUp.js"></script>
 </body>
 </html>
