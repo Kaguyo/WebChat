@@ -1,90 +1,65 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Text;
-using Newtonsoft.Json;
 
-namespace backend
+const int PORT = 5000;
+HttpListener listener = new HttpListener();
+listener.Prefixes.Add($"http://localhost:{PORT}/");
+listener.Start();
+
+Console.WriteLine($"Servidor iniciado... Aguardando requisições. (PORT:{PORT})");
+
+while (true)
 {
-    class Program
+    HttpListenerContext context = listener.GetContext();
+    HttpListenerRequest request = context.Request;
+    HttpListenerResponse response = context.Response;
+    response.Headers.Add("Access-Control-Allow-Origin", "*");
+    response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+    response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+
+    if (request.HttpMethod == "OPTIONS")
     {
-        static void Main(string[] args)
+        response.StatusCode = (int)HttpStatusCode.OK;
+        response.OutputStream.Close();
+        continue;
+    }
+
+    if (request.ContentType == null)
+    {
+        Console.WriteLine("\nContentType de REQUEST null encontrada:");
+        Console.WriteLine(request.ContentType);
+        foreach (string header in request.Headers)
         {
-            const int PORT = 5000;
-            HttpListener listener = new HttpListener();
-            listener.Prefixes.Add($"http://localhost:{PORT}/");
-            listener.Start();
-
-            Console.WriteLine($"Servidor iniciado... Aguardando requisições. (PORT:{PORT})");
-
-            while (true)
+            Console.WriteLine($"{header}: {request.Headers[header]}");
+        }
+        continue;
+    }
+    else
+    {
+        if (request.HttpMethod == "POST" && request.ContentType.Contains("application/json"))
+        {
+            try 
             {
-                try
+                using (StreamReader reader = new StreamReader(request.InputStream, Encoding.UTF8))
                 {
-                    HttpListenerContext context = listener.GetContext();
-                    HttpListenerRequest request = context.Request;
-
-                    context.Response.AddHeader("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
-                    context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-                    context.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type");
-
-                    if (request.HttpMethod == "OPTIONS")
-                    {
-                        context.Response.StatusCode = 200; // OK 
-                        context.Response.Close();
-                        continue;
-                    }
-
-                    if (request.HttpMethod == "POST")
-                    {
-                        using (StreamReader reader = new StreamReader(request.InputStream, request.ContentEncoding))
-                        {
-                            string json = reader.ReadToEnd();
-
-                            // Tentativa de desserialização do JSON
-                            try
-                            {
-                                Usuario? usuario = JsonConvert.DeserializeObject<Usuario>(json);
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                                Console.WriteLine($"Usuário recebido: {usuario.Username}, {usuario.PhoneNumber}");
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                                // Respondendo com uma mensagem de sucesso
-                                HttpListenerResponse response = context.Response;
-                                string responseString = "{\"message\": \"Usuário recebido com sucesso!\"}";
-                                byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-
-                                response.ContentLength64 = buffer.Length;
-                                response.OutputStream.Write(buffer, 0, buffer.Length);
-                                response.OutputStream.Close();
-                            }
-                            catch (JsonException ex)
-                            {
-                                Console.WriteLine($"Erro de desserialização: {ex.Message}");
-                                context.Response.StatusCode = 400; // Bad Request
-                                context.Response.Close();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        context.Response.StatusCode = 405; // Method Not Allowed
-                        context.Response.Close();
-                    }
+                    string json = reader.ReadToEnd();
+                    Console.WriteLine(json);
+                    Console.WriteLine(json.Length);
+                    response.StatusCode = (int)HttpStatusCode.OK;
+                    byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
+                    response.OutputStream.Write(buffer, 0, buffer.Length);
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erro ao processar a requisição: {ex.Message}");
-                }
+            } 
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Erro ao processar os dados ERR: {ex.Message}" );
+                Console.WriteLine($"Detalhes do Erro: {ex}");
+
+                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                byte[] buffer = Encoding.UTF8.GetBytes("Erro ao processar os dados");
+                response.OutputStream.Write(buffer, 0, buffer.Length);
             }
         }
-
-        public class Usuario
-        {
-            public string Username { get; set; } = "";
-            public string PhoneNumber { get; set; } = "";
-            public string Password { get; set; } = "";
-            public string Password2 { get; set; } = "";
-        }
+        Console.WriteLine("\n=========================\n");
     }
 }

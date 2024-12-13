@@ -24,13 +24,11 @@ password2.addEventListener('input', (event) => {
 
 CadrastroBtn.onclick = function (){
     try {
-        const usuario = new Usuario(Usuario.usersCount++, _username, _phoneNumber, _password, _password2);
-        const variavelUsuario = `usuario_${Usuario.usersCount++}`;
-        const usuarioIdentificado = {
-            [variavelUsuario]: usuario
-        }
-        const jsonUsuario = JSON.stringify(usuarioIdentificado);
-        fetch("http://localhost:5000/ProcessUser", {
+        const objetoUsuario = new Usuario(Usuario.usersCount++, _username, _phoneNumber, _password, _password2);
+        const jsonUsuario = JSON.stringify(objetoUsuario);
+        console.log(objetoUsuario);
+        console.log(jsonUsuario);
+        fetch("http://localhost:5000/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
