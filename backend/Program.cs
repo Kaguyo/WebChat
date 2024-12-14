@@ -50,8 +50,13 @@ public class Program
                         {
                             string json = reader.ReadToEnd();
                             Console.WriteLine(json);
-                            Console.WriteLine(json.Length);
-                            response.StatusCode = (int)HttpStatusCode.OK;
+                            User? user = JsonSerializer.Deserialize<User>(json);
+                            Console.WriteLine($"Json: {JsonSerializer.Serialize(user)}");
+                            Console.WriteLine($"Id: {user.Id}");
+                            Console.WriteLine($"Name: {user.Nome}");
+                            Console.WriteLine($"Number: {user.Number}");
+                            Console.WriteLine($"Password: {user.Password}");
+                            Console.WriteLine($"Password2: {user.Password2}");
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
                         }
@@ -70,14 +75,12 @@ public class Program
             }
         }
     }
-    public class Sqlite
+    public class User
     {
-        public bool addUser(string json)
-        {
-            JsonSerializer.DeserializeAsync
-
-            return true;
-        }
+        public int Id { get; set; }
+        public string? Nome { get; set; }
+        public string? Number { get; set; }
+        public string? Password { get; set; }
+        public string? Password2 { get; set; }
     }
 }
-

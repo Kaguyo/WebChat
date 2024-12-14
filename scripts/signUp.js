@@ -4,27 +4,27 @@ const phoneNumber = document.getElementById("phoneNumber");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
-let _username = "";
-let _phoneNumber = "";
-let _password = "";
-let _password2 = "";
+let Username = "";
+let PhoneNumber = "";
+let Password = "";
+let Password2 = "";
 
 username.addEventListener('input', (event) => {
-    _username = event.target.value;
+    Username = event.target.value;
 });
 phoneNumber.addEventListener('input', (event) => {
-    _phoneNumber = event.target.value;
+    PhoneNumber = event.target.value;
 });
 password.addEventListener('input', (event) => {
-    _password = event.target.value;
+    Password = event.target.value;
 });
 password2.addEventListener('input', (event) => {
-    _password2 = event.target.value;
+    Password2 = event.target.value;
 });
 
 CadrastroBtn.onclick = function (){
     try {
-        const objetoUsuario = new Usuario(Usuario.usersCount++, _username, _phoneNumber, _password, _password2);
+        const objetoUsuario = new Usuario(Usuario.usersCount++, Username, PhoneNumber, Password, Password2);
         const jsonUsuario = JSON.stringify(objetoUsuario);
         console.log(objetoUsuario);
         console.log(jsonUsuario);
