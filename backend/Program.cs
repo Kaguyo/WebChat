@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Data.SQLite;
 
 
 public class Program
@@ -51,12 +52,18 @@ public class Program
                             string json = reader.ReadToEnd();
                             Console.WriteLine(json);
                             User? user = JsonSerializer.Deserialize<User>(json);
-                            Console.WriteLine($"Json: {JsonSerializer.Serialize(user)}");
-                            Console.WriteLine($"Id: {user.Id}");
-                            Console.WriteLine($"Name: {user.Nome}");
-                            Console.WriteLine($"Number: {user.Number}");
-                            Console.WriteLine($"Password: {user.Password}");
-                            Console.WriteLine($"Password2: {user.Password2}");
+                            string query = $"INSERT INTO usuarios (Name, Number, Password) VALUES (@{user.Name}, @{user.Number}, @{user.Password})";
+                            using (SQLiteConnection connection = new("Data Source=../xDataBase/banco.db"))
+                            {
+                                connection.Open();
+                                using (SQLiteCommand cmd = new (query, connection))
+                                {
+                                    cmd.Parameters.AddWithValue("@name", user.Name);
+                                    cmd.Parameters.AddWithValue("@number", user.Number);
+                                    cmd.Parameters.AddWithValue("@password", user.Password);
+                                }
+                                connection.Close();
+                            }
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
                         }
@@ -78,7 +85,7 @@ public class Program
     public class User
     {
         public int Id { get; set; }
-        public string? Nome { get; set; }
+        public string? Name { get; set; }
         public string? Number { get; set; }
         public string? Password { get; set; }
         public string? Password2 { get; set; }
