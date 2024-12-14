@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SQLite;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 
@@ -10,7 +11,7 @@ public class Program
     public static void Main(string[] args)
     {
         const int PORT = 5000;
-        HttpListener listener = new HttpListener();
+        HttpListener listener = new();
         listener.Prefixes.Add($"http://localhost:{PORT}/");
         listener.Start();
 
@@ -51,15 +52,17 @@ public class Program
                         using (StreamReader reader = new StreamReader(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
-                            Console.WriteLine(json);
-                            Console.WriteLine(DalHelper.caminho);
                             User? user = JsonSerializer.Deserialize<User>(json);
-                            DalHelper.CriarBancoSQLite();
-                            DalHelper.CriarTabelaSQLite();
-                            DalHelper.Add(user);
-                            DalHelper.DbDispose();
+                            if (!File.Exists(DalHelper.caminho))
+                            {
+                                DalHelper.CriarBancoSQLite();
+                            }
+                                DalHelper.CriarTabelaSQLite();
+                                if (user != null)DalHelper.Add(user);
+                                DalHelper.DbDispose();
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
+                            DalHelper.DeleteAll();
                         }
                     }
                     catch (Exception ex)
@@ -72,7 +75,7 @@ public class Program
                         response.OutputStream.Write(buffer, 0, buffer.Length);
                     }
                 }
-                Console.WriteLine("\n=========================\n");
+                Console.WriteLine("\nTask finished\n=========================\n");
             }
         }
     }
@@ -86,12 +89,13 @@ public class Program
     }
     public class DalHelper()
     {
-        internal static string caminho = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "xDataBase", "Users.sqlite");
+        internal static string caminho = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "xDataBase", "Users.sqlite");
+        internal static string connectionString = $"Data Source={caminho}";
         private static SQLiteConnection sqliteConnection = null!;
 
         private static SQLiteConnection DbConnection()
         {
-            sqliteConnection = new SQLiteConnection(caminho);
+            sqliteConnection = new SQLiteConnection(connectionString);
             sqliteConnection.Open();
             return sqliteConnection;
         }
@@ -106,9 +110,11 @@ public class Program
             try
             {
                 SQLiteConnection.CreateFile(caminho);
+                PrintCurrentLine("Criando arquivo sqlite...");
             }
             catch
             {
+                PrintCurrentLine("Falha ao tentar criar arquivo sqlite...");
                 throw;
             }
         }
@@ -119,13 +125,14 @@ public class Program
             {
                 using(var cmd = DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id int, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50))";
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50))";
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine("Criando tabela...");
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Erro em CREATE TABLE em public static void CriarTabelaSQLITE: {ex.Message}");
+                PrintCurrentLine($"Erro em CREATE TABLE em public static void CriarTabelaSQLITE: {ex.Message}");
                 throw;
             }
         }
@@ -136,16 +143,19 @@ public class Program
             DataTable dt = new DataTable();
             try
             {
-                using (var cmd = DbConnection().CreateCommand()){
+                using (var cmd = DbConnection().CreateCommand())
+                {
+                    
                     cmd.CommandText = "SELECT * FROM Users";
                     da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
                     da.Fill(dt);
+                    PrintCurrentLine("Selecionando Users...");
                     return dt;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro em SELECT em public static DataTable AddGetUsers: {ex.Message}");
+                PrintCurrentLine($"Erro em SELECT em public static DataTable AddGetUsers: {ex.Message}");
                 throw;
             }
         }
@@ -160,12 +170,13 @@ public class Program
                     cmd.CommandText = "SELECT * FROM Users Where Id=" + Id;
                     da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
                     da.Fill(dt);
+                    PrintCurrentLine($"Seleciando User por ID({Id})...");
                     return dt;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro em SELECT em public static AddGetUser: {ex.Message}");
+                PrintCurrentLine($"Erro em SELECT em public static AddGetUser: {ex.Message}");
                 throw;
             }
             
@@ -184,10 +195,11 @@ public class Program
                     cmd.Parameters.AddWithValue("@Password2", user.Password2);
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine("Inserindo into Users...");
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Erro em INSERT INTO em public static void Add: {ex.Message}");
+                PrintCurrentLine($"Erro em INSERT INTO em public static void Add: {ex.Message}");
                 throw;
             }
         }
@@ -207,10 +219,11 @@ public class Program
                         cmd.ExecuteNonQuery();
                     }
                 }
+                PrintCurrentLine("Realizando UPDATE em users...");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro em UPDATE em public static void Add: {ex.Message}");
+                PrintCurrentLine($"Erro em UPDATE em public static void Add: {ex.Message}");
                 throw;
             }
         }
@@ -224,13 +237,36 @@ public class Program
                     cmd.Parameters.AddWithValue("@Id", Id);
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine($"DELETANDO FROM Users WHERE Id = {Id}...");
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Erro em DELETE em public static void Delete: {ex.Message}");
+                PrintCurrentLine($"Erro em DELETE em public static void Delete: {ex.Message}");
                 throw;
             }
         }
+        public static void DeleteAll()
+        {
+            try 
+            {
+                using (var cmd = new SQLiteCommand(DbConnection()))
+                {
+                    cmd.CommandText = "DELETE FROM Users";
+                    cmd.ExecuteNonQuery();
+                }
+                PrintCurrentLine($"DELETANDO FROM Users...(ALL)");
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Erro em DELETE ALL em public static void DeleteAll: {ex.Message}");
+                throw;
+            }
+        }
+        
+    }
+    public static void PrintCurrentLine(string comentario, [CallerLineNumber] int lineNumber = 0)
+    {
+        Console.WriteLine($"{comentario} ln:{lineNumber}");
     }
 }
 
