@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj": {}
+    "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj": {}
   },
   "projects": {
-    "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj": {
+    "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
+        "projectUniqueName": "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
+        "projectPath": "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
         "packagesPath": "C:\\Users\\Fabricio\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\obj\\",
+        "outputPath": "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

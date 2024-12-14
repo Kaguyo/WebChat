@@ -60,9 +60,17 @@ public class Program
                             Console.WriteLine($"Number: {user.Number}");
                             Console.WriteLine($"Password: {user.Password}");
                             Console.WriteLine($"Password2: {user.Password2}");
-                            DalHelper.CriarBancoSQLite();
+                            string caminho = "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\xDataBase\\Users.sqlite";
+                            bool fileExists = System.IO.File.Exists(caminho);
+                            if(fileExists){
+                                Console.WriteLine("O arquivo já existe");
+                            }else{
+                                Console.WriteLine("O arquivo não existe");
+                            }
+                            // DalHelper.CriarBancoSQLite();
                             DalHelper.CriarTabelaSQLite();
                             DalHelper.Add(user);
+                            DalHelper.Dispose();
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
                         }
@@ -102,6 +110,10 @@ public class DalHelper()
             sqliteConnection = new SQLiteConnection("Data Source=C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\xDataBase\\Users.sqlite");
             sqliteConnection.Open();
             return sqliteConnection;
+        }
+
+        public static void Dispose(){
+            sqliteConnection.Dispose();
         }
 
         public static void CriarBancoSQLite(){

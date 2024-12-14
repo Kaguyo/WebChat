@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CP8KKlPzSl8=",
+  "dgSpecHash": "6MQ310qXPOI=",
   "success": true,
-  "projectFilePath": "c:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\backend\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fabricio\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
     "C:\\Users\\Fabricio\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
