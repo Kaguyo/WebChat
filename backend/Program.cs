@@ -49,7 +49,7 @@ public class Program
                 {
                     try
                     {
-                        using (StreamReader reader = new StreamReader(request.InputStream, Encoding.UTF8))
+                        using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
                             User? user = JsonSerializer.Deserialize<User>(json);
@@ -155,8 +155,8 @@ public class Program
         }
         public static DataTable? GetUsers()
         {
-            SQLiteDataAdapter? da = null;
-            DataTable dt = new DataTable();
+            SQLiteDataAdapter? da;
+            DataTable dt = new();
             try
             {
                 using (var cmd = DbConnection().CreateCommand())
@@ -177,8 +177,8 @@ public class Program
         }
 
         public static DataTable? GetUser(int Id){
-            SQLiteDataAdapter? da = null;
-            DataTable dt = new DataTable();
+            SQLiteDataAdapter? da;
+            DataTable dt = new();
             try
             {
                 using (var cmd = DbConnection().CreateCommand())
@@ -221,7 +221,7 @@ public class Program
         {
             try 
             {
-                using (var cmd = new SQLiteCommand(DbConnection()))
+                using (SQLiteCommand cmd = new(DbConnection()))
                 {
                     cmd.CommandText = "UPDATE Users SET Name=@Name, Number=@Number, Password=@Password WHERE Id=@Id";
                     cmd.Parameters.AddWithValue("@Name", user.Nome);
@@ -241,7 +241,7 @@ public class Program
         {
             try 
             {
-                using(var cmd = new SQLiteCommand(DbConnection()))
+                using(SQLiteCommand cmd = new(DbConnection()))
                 {
                     cmd.CommandText="DELETE FROM Users WHERE Id=@Id";
                     cmd.Parameters.AddWithValue("@Id", Id);
@@ -259,7 +259,7 @@ public class Program
         {
             try 
             {
-                using (var cmd = new SQLiteCommand(DbConnection()))
+                using (SQLiteCommand cmd = new(DbConnection()))
                 {
                     cmd.CommandText = "DELETE FROM Users";
                     cmd.ExecuteNonQuery();
