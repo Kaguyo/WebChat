@@ -53,25 +53,7 @@ public class Program
                         {
                             string json = reader.ReadToEnd();
                             User? user = JsonSerializer.Deserialize<User>(json);
-<<<<<<< HEAD
-                            Console.WriteLine($"Json: {JsonSerializer.Serialize(user)}");
-                            Console.WriteLine($"Id: {user.Id}");
-                            Console.WriteLine($"Name: {user.Nome}");
-                            Console.WriteLine($"Number: {user.Number}");
-                            Console.WriteLine($"Password: {user.Password}");
-                            Console.WriteLine($"Password2: {user.Password2}");
-                            string caminho = "C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\xDataBase\\Users.sqlite";
-                            bool fileExists = System.IO.File.Exists(caminho);
-                            if(fileExists){
-                                Console.WriteLine("O arquivo já existe");
-                            }else{
-                                Console.WriteLine("O arquivo não existe");
-                            }
-                            // DalHelper.CriarBancoSQLite();
-                            DalHelper.CriarTabelaSQLite();
-                            DalHelper.Add(user);
-                            DalHelper.Dispose();
-=======
+                            Console.WriteLine(json);
                             if (!File.Exists(DalHelper.caminho))
                             {
                                 DalHelper.CriarBancoSQLite();
@@ -79,10 +61,9 @@ public class Program
                                 DalHelper.CriarTabelaSQLite();
                                 if (user != null)DalHelper.Add(user);
                                 DalHelper.DbDispose();
->>>>>>> 859139837788f147e4e583335583b659d4be3102
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
-                            DalHelper.DeleteAll();
+                            // DalHelper.DeleteAll();
                         }
                     }
                     catch (Exception ex)
@@ -124,15 +105,6 @@ public class Program
             sqliteConnection.Dispose();
         }
 
-<<<<<<< HEAD
-        public static void Dispose(){
-            sqliteConnection.Dispose();
-        }
-
-        public static void CriarBancoSQLite(){
-            try{
-                SQLiteConnection.CreateFile(@"C:\Users\Fabricio\Codes\Project_Conta\WebChat\xDataBase\Users.sqlite");
-=======
 
         public static void CriarBancoSQLite()
         {
@@ -140,7 +112,6 @@ public class Program
             {
                 SQLiteConnection.CreateFile(caminho);
                 PrintCurrentLine("Criando arquivo sqlite...");
->>>>>>> 859139837788f147e4e583335583b659d4be3102
             }
             catch
             {
@@ -155,7 +126,7 @@ public class Program
             {
                 using(var cmd = DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50))";
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER NOT NULL, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50), PRIMARY KEY (Id))";
                     cmd.ExecuteNonQuery();
                 }
                 PrintCurrentLine("Criando tabela...");
@@ -217,8 +188,8 @@ public class Program
             {
                 using (var cmd = DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO Users(Id, Name, Number, Password, Password2) values (@Id, @Nome, @Number, @Password, @Password2)";
-                    cmd.Parameters.AddWithValue("@Id", user.Id);
+                    cmd.CommandText = "INSERT INTO Users(Name, Number, Password, Password2) values (@Nome, @Number, @Password, @Password2)";
+                    // cmd.Parameters.AddWithValue("@Id", user.Id);
                     cmd.Parameters.AddWithValue("@Nome", user.Nome);
                     cmd.Parameters.AddWithValue("@Number", user.Number);
                     cmd.Parameters.AddWithValue("@Password", user.Password);
