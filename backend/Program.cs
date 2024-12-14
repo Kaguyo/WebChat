@@ -53,7 +53,6 @@ public class Program
                         {
                             string json = reader.ReadToEnd();
                             User? user = JsonSerializer.Deserialize<User>(json);
-                            Console.WriteLine(json);
                             if (!File.Exists(DalHelper.caminho))
                             {
                                 DalHelper.CriarBancoSQLite();
@@ -64,6 +63,7 @@ public class Program
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
                             // DalHelper.DeleteAll();
+                            // DalHelper.DroparTabelaSQLite("Users");
                         }
                     }
                     catch (Exception ex)
@@ -82,7 +82,6 @@ public class Program
     }
     public class User
     {
-        public int Id { get; set; }
         public string? Nome { get; set; }
         public string? Number { get; set; }
         public string? Password { get; set; }
@@ -126,7 +125,7 @@ public class Program
             {
                 using(var cmd = DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER NOT NULL, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50), PRIMARY KEY (Id))";
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER NOT NULL, Name Varchar(50), Number Varchar(50), Password Varchar(50), PRIMARY KEY (Id))";
                     cmd.ExecuteNonQuery();
                 }
                 PrintCurrentLine("Criando tabela...");
@@ -137,7 +136,23 @@ public class Program
                 throw;
             }
         }
-
+        public static void DroparTabelaSQLite(string tableName)
+        {
+            try
+            {
+                using (var cmd = DbConnection().CreateCommand())
+                {
+                    cmd.CommandText = $"DROP TABLE IF EXISTS {tableName}";
+                    cmd.ExecuteNonQuery();
+                }
+                PrintCurrentLine($"Tabela {tableName} removida com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Erro em DROP TABLE em public static void DroparTabelaSQLite: {ex.Message}");
+                throw;
+            }
+        }
         public static DataTable? GetUsers()
         {
             SQLiteDataAdapter? da = null;
@@ -188,12 +203,10 @@ public class Program
             {
                 using (var cmd = DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO Users(Name, Number, Password, Password2) values (@Nome, @Number, @Password, @Password2)";
-                    // cmd.Parameters.AddWithValue("@Id", user.Id);
+                    cmd.CommandText = "INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
                     cmd.Parameters.AddWithValue("@Nome", user.Nome);
                     cmd.Parameters.AddWithValue("@Number", user.Number);
                     cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.Parameters.AddWithValue("@Password2", user.Password2);
                     cmd.ExecuteNonQuery();
                 }
                 PrintCurrentLine("Inserindo into Users...");
@@ -210,15 +223,11 @@ public class Program
             {
                 using (var cmd = new SQLiteCommand(DbConnection()))
                 {
-                    if(user.Id != 0)
-                    {
-                        cmd.CommandText = "UPDATE Users SET Name=@Name, Number=@Number, Password=@Password WHERE Id=@Id";
-                        cmd.Parameters.AddWithValue("@Id", user.Id);
-                        cmd.Parameters.AddWithValue("@Name", user.Nome);
-                        cmd.Parameters.AddWithValue("@Number", user.Number);
-                        cmd.Parameters.AddWithValue("@Password", user.Password);
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandText = "UPDATE Users SET Name=@Name, Number=@Number, Password=@Password WHERE Id=@Id";
+                    cmd.Parameters.AddWithValue("@Name", user.Nome);
+                    cmd.Parameters.AddWithValue("@Number", user.Number);
+                    cmd.Parameters.AddWithValue("@Password", user.Password);
+                    cmd.ExecuteNonQuery();
                 }
                 PrintCurrentLine("Realizando UPDATE em users...");
             }
