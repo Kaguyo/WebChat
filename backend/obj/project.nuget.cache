@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "8MRMM5DC+xk=",
+  "dgSpecHash": "Z6k0tLHVZ1M=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Kaguyo\\Desktop\\Webchat\\backend\\backend.csproj",
+  "projectFilePath": "C:\\Users\\Fabricio\\Codes\\WebChat\\backend\\backend.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Kaguyo\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\Fabricio\\.nuget\\packages\\dapper\\2.1.35\\dapper.2.1.35.nupkg.sha512",
+    "C:\\Users\\Fabricio\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\Fabricio\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\Fabricio\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Fabricio\\.nuget\\packages\\npgsql\\9.0.2\\npgsql.9.0.2.nupkg.sha512"
   ],
   "logs": []
 }

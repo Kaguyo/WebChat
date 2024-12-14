@@ -1,5 +1,10 @@
-﻿using System.Net;
+﻿using System.Data;
+using System.Data.Common;
+using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Dapper;
+using Npgsql;
 
 const int PORT = 5000;
 HttpListener listener = new HttpListener();
@@ -63,3 +68,76 @@ while (true)
         Console.WriteLine("\n=========================\n");
     }
 }
+// public class User
+// {
+//     public string Nome { get; set; }
+
+//     public int Number { get; set; }
+
+//     public string Password { get; set; }
+
+// }
+
+// public User() { }   
+
+// public User (string nome, int number, string password)
+// {
+//     Nome = nome;
+//     Number = number;
+//     Password = password;
+// }
+
+// private void ObterUsers()
+// {
+//     var repository = new UserRepository();
+//     Users = repository.Get();
+
+    
+// }
+
+// public class DbConnection : IDisposable
+// {
+//     public NpgsqlConnection Connection { get; set; }
+
+//     public DbConnection{
+//         DbConnection = new NpgsqlConnection("Server=localhost;Port=3306;User Id=root; Password=1234;");
+//         Connection.Open();
+//     }
+
+//     public void Dispose()
+//     {
+//         Connection.Dispose();
+//     }
+
+// }
+
+// public class UserRepository
+// {
+//     public bool Add(User User)
+//     {
+//         using var conn = new DbConnection();
+
+//         string query = @"INSERT INTO BD_USERS.Users
+//                         (@name, @number, @password)
+//                         VALUES(?, ?, ?);";
+
+//         var result = conn.Connection.Execute(sql: query, param: User);
+
+//         return result == 1;
+//     }
+
+//     public List<User> Get()
+//     {
+//         using var conn = new DbConnection();
+
+//         string query = @"SELECT id, name, `number`, password FROM BD_USERS.Users;";
+
+//         var alunos = conn.Connection.Query<User>(sql: query);
+
+//         return alunos.ToList();
+//     }
+// }
+
+
+    
+    
