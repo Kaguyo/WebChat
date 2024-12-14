@@ -24,7 +24,7 @@ password2.addEventListener('input', (event) => {
 
 CadrastroBtn.onclick = function (){
     try {
-        const objetoUsuario = new Usuario(Usuario.usersCount++, Username, PhoneNumber, Password, Password2);
+        const objetoUsuario = new Usuario(Username, PhoneNumber, Password, Password2);
         const jsonUsuario = JSON.stringify(objetoUsuario);
         console.log(objetoUsuario);
         console.log(jsonUsuario);

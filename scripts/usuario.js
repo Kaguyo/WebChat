@@ -1,10 +1,9 @@
 class Usuario {
-    constructor(Id, Nome, Number, Password, Password2){
-        this.Id = Id;
+    constructor(Nome, Number, Password, Password2){
         this.Nome = Nome;
         this.Number = Number;
         this.Password = Password;
         this.Password2 = Password2;
     }
-    static usersCount = 0;   
+    static usersCount = 1;   
 }

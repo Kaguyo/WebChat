@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using System.Data.SQLite;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-using static Program;
 
 
 public class Program
@@ -11,7 +11,7 @@ public class Program
     public static void Main(string[] args)
     {
         const int PORT = 5000;
-        HttpListener listener = new HttpListener();
+        HttpListener listener = new();
         listener.Prefixes.Add($"http://localhost:{PORT}/");
         listener.Start();
 
@@ -52,8 +52,8 @@ public class Program
                         using (StreamReader reader = new StreamReader(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
-                            Console.WriteLine(json);
                             User? user = JsonSerializer.Deserialize<User>(json);
+<<<<<<< HEAD
                             Console.WriteLine($"Json: {JsonSerializer.Serialize(user)}");
                             Console.WriteLine($"Id: {user.Id}");
                             Console.WriteLine($"Name: {user.Nome}");
@@ -71,8 +71,18 @@ public class Program
                             DalHelper.CriarTabelaSQLite();
                             DalHelper.Add(user);
                             DalHelper.Dispose();
+=======
+                            if (!File.Exists(DalHelper.caminho))
+                            {
+                                DalHelper.CriarBancoSQLite();
+                            }
+                                DalHelper.CriarTabelaSQLite();
+                                if (user != null)DalHelper.Add(user);
+                                DalHelper.DbDispose();
+>>>>>>> 859139837788f147e4e583335583b659d4be3102
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
+                            DalHelper.DeleteAll();
                         }
                     }
                     catch (Exception ex)
@@ -85,33 +95,36 @@ public class Program
                         response.OutputStream.Write(buffer, 0, buffer.Length);
                     }
                 }
-                Console.WriteLine("\n=========================\n");
+                Console.WriteLine("\nTask finished\n=========================\n");
             }
         }
     }
     public class User
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string? Nome { get; set; }
         public string? Number { get; set; }
         public string? Password { get; set; }
         public string? Password2 { get; set; }
     }
-}
-
-public class DalHelper()
+    public class DalHelper()
     {
-        private static SQLiteConnection sqliteConnection;
+        internal static string caminho = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "xDataBase", "Users.sqlite");
+        internal static string connectionString = $"Data Source={caminho}";
+        private static SQLiteConnection sqliteConnection = null!;
 
-        // public DalHelper(){}
-
-
-        private static SQLiteConnection DbConnection(){
-            sqliteConnection = new SQLiteConnection("Data Source=C:\\Users\\Fabricio\\Codes\\Project_Conta\\WebChat\\xDataBase\\Users.sqlite");
+        private static SQLiteConnection DbConnection()
+        {
+            sqliteConnection = new SQLiteConnection(connectionString);
             sqliteConnection.Open();
             return sqliteConnection;
         }
+        public static void DbDispose()
+        {
+            sqliteConnection.Dispose();
+        }
 
+<<<<<<< HEAD
         public static void Dispose(){
             sqliteConnection.Dispose();
         }
@@ -119,61 +132,91 @@ public class DalHelper()
         public static void CriarBancoSQLite(){
             try{
                 SQLiteConnection.CreateFile(@"C:\Users\Fabricio\Codes\Project_Conta\WebChat\xDataBase\Users.sqlite");
+=======
+
+        public static void CriarBancoSQLite()
+        {
+            try
+            {
+                SQLiteConnection.CreateFile(caminho);
+                PrintCurrentLine("Criando arquivo sqlite...");
+>>>>>>> 859139837788f147e4e583335583b659d4be3102
             }
-            catch{
+            catch
+            {
+                PrintCurrentLine("Falha ao tentar criar arquivo sqlite...");
                 throw;
             }
         }
         
-        public static void CriarTabelaSQLite(){
-            try{
-                using(var cmd = DbConnection().CreateCommand()){
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id int, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50))";
+        public static void CriarTabelaSQLite()
+        {
+            try
+            {
+                using(var cmd = DbConnection().CreateCommand())
+                {
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name Varchar(50), Number Varchar(50), Password Varchar(50), Password2 Varchar(50))";
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine("Criando tabela...");
             }
-            catch(Exception ex){
-                throw ex;
-            }
-        }
-
-        public static DataTable GetUsers(){
-            SQLiteDataAdapter da = null;
-            DataTable dt = new DataTable();
-            try{
-                using (var cmd = DbConnection().CreateCommand()){
-                    cmd.CommandText = "SELECT * FROM Users";
-                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
-                    da.Fill(dt);
-                    return dt;
-                }
-            }
-            catch (Exception ex){
-                throw ex;
+            catch(Exception ex)
+            {
+                PrintCurrentLine($"Erro em CREATE TABLE em public static void CriarTabelaSQLITE: {ex.Message}");
+                throw;
             }
         }
 
-        public static DataTable GetUser(int Id){
-            SQLiteDataAdapter da = null;
+        public static DataTable? GetUsers()
+        {
+            SQLiteDataAdapter? da = null;
             DataTable dt = new DataTable();
             try
             {
-                using (var cmd = DbConnection().CreateCommand()){
-                    cmd.CommandText = "SELECT * FROM Users Where Id=" + Id;
+                using (var cmd = DbConnection().CreateCommand())
+                {
+                    
+                    cmd.CommandText = "SELECT * FROM Users";
                     da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
                     da.Fill(dt);
+                    PrintCurrentLine("Selecionando Users...");
                     return dt;
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                PrintCurrentLine($"Erro em SELECT em public static DataTable AddGetUsers: {ex.Message}");
+                throw;
             }
         }
 
-        public static void Add(User user){
-            try{
-                using (var cmd = DbConnection().CreateCommand()){
+        public static DataTable? GetUser(int Id){
+            SQLiteDataAdapter? da = null;
+            DataTable dt = new DataTable();
+            try
+            {
+                using (var cmd = DbConnection().CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Users Where Id=" + Id;
+                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
+                    da.Fill(dt);
+                    PrintCurrentLine($"Seleciando User por ID({Id})...");
+                    return dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Erro em SELECT em public static AddGetUser: {ex.Message}");
+                throw;
+            }
+            
+        }
+        public static void Add(User user)
+        {
+            try
+            {
+                using (var cmd = DbConnection().CreateCommand())
+                {
                     cmd.CommandText = "INSERT INTO Users(Id, Name, Number, Password, Password2) values (@Id, @Nome, @Number, @Password, @Password2)";
                     cmd.Parameters.AddWithValue("@Id", user.Id);
                     cmd.Parameters.AddWithValue("@Nome", user.Nome);
@@ -182,16 +225,22 @@ public class DalHelper()
                     cmd.Parameters.AddWithValue("@Password2", user.Password2);
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine("Inserindo into Users...");
             }
-            catch(Exception ex){
-                throw ex;
+            catch(Exception ex)
+            {
+                PrintCurrentLine($"Erro em INSERT INTO em public static void Add: {ex.Message}");
+                throw;
             }
         }
-
-        public static void Update(User user){
-            try {
-                using (var cmd = new SQLiteCommand(DbConnection())){
-                    if (user.Id != null){
+        public static void Update(User user)
+        {
+            try 
+            {
+                using (var cmd = new SQLiteCommand(DbConnection()))
+                {
+                    if(user.Id != 0)
+                    {
                         cmd.CommandText = "UPDATE Users SET Name=@Name, Number=@Number, Password=@Password WHERE Id=@Id";
                         cmd.Parameters.AddWithValue("@Id", user.Id);
                         cmd.Parameters.AddWithValue("@Name", user.Nome);
@@ -200,24 +249,54 @@ public class DalHelper()
                         cmd.ExecuteNonQuery();
                     }
                 }
+                PrintCurrentLine("Realizando UPDATE em users...");
             }
-            catch (Exception ex){
-                throw ex;
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Erro em UPDATE em public static void Add: {ex.Message}");
+                throw;
             }
         }
-
-        public static void Delete(int Id){
-            try {
-                using(var cmd = new SQLiteCommand(DbConnection())){
+        public static void Delete(int Id)
+        {
+            try 
+            {
+                using(var cmd = new SQLiteCommand(DbConnection()))
+                {
                     cmd.CommandText="DELETE FROM Users WHERE Id=@Id";
                     cmd.Parameters.AddWithValue("@Id", Id);
                     cmd.ExecuteNonQuery();
                 }
+                PrintCurrentLine($"DELETANDO FROM Users WHERE Id = {Id}...");
             }
-            catch(Exception ex){
-                throw ex;
+            catch(Exception ex)
+            {
+                PrintCurrentLine($"Erro em DELETE em public static void Delete: {ex.Message}");
+                throw;
             }
         }
-
-
+        public static void DeleteAll()
+        {
+            try 
+            {
+                using (var cmd = new SQLiteCommand(DbConnection()))
+                {
+                    cmd.CommandText = "DELETE FROM Users";
+                    cmd.ExecuteNonQuery();
+                }
+                PrintCurrentLine($"DELETANDO FROM Users...(ALL)");
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Erro em DELETE ALL em public static void DeleteAll: {ex.Message}");
+                throw;
+            }
+        }
+        
+    }
+    public static void PrintCurrentLine(string comentario, [CallerLineNumber] int lineNumber = 0)
+    {
+        Console.WriteLine($"{comentario} ln:{lineNumber}");
+    }
 }
+
