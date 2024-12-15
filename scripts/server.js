@@ -24,6 +24,9 @@ const server = http.createServer((req, res) => {
 
     } else if (req.url === '/scripts/signUp.js'){
         filePath = path.join(__dirname, 'signUp.js');
+        
+    } else if (req.url === '/scripts/usuario.js'){
+        filePath = path.join(__dirname, "usuario.js");
 
     } else { // else que vai levar pra pagina de erro existente em views
         filePath = path.join(__dirname, '..', 'views', 'error.html');

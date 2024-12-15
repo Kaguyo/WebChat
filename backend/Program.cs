@@ -15,7 +15,7 @@ public class Program
         listener.Prefixes.Add($"http://localhost:{PORT}/");
         listener.Start();
 
-        Console.WriteLine($"Servidor iniciado... Aguardando requisições. (PORT:{PORT})");
+        Console.WriteLine($"Servidor iniciado... Aguardando requisições. (PORT:{PORT})\n");
 
         while (true)
         {
@@ -47,23 +47,24 @@ public class Program
             {
                 if (request.HttpMethod == "POST" && request.ContentType.Contains("application/json"))
                 {
+                    Console.Clear();
                     try
                     {
                         using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
                             User? user = JsonSerializer.Deserialize<User>(json);
-                            if (!File.Exists(DalHelper.caminho))
+                            if (!File.Exists(DalHelper.caminhoUsers))
                             {
-                                DalHelper.CriarBancoSQLite();
+                                DalHelper.CriarBancoSQLite(DalHelper.caminhoUsers);
                             }
-                                DalHelper.CriarTabelaSQLite();
-                                if (user != null)DalHelper.Add(user);
-                                DalHelper.DbDispose();
+                            if (!File.Exists(DalHelper.caminhoUsers)) DalHelper.CriarTabelaSQLite("Users", "Users.sqlite"); // CREATE TABLE IF NOT EXISTS (tabelaName)
+                            if (user != null && user.Nome != "") DalHelper.AddUser(user, "Users.sqlite"); // INSERTS INTO Users (object user)
                             byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
                             response.OutputStream.Write(buffer, 0, buffer.Length);
-                            // DalHelper.DeleteAll();
-                            // DalHelper.DroparTabelaSQLite("Users");
+                            // DalHelper.DropTable("Users","Users.sqlite"); // Drops table by Table name
+                            // DalHelper.DeleteAllFromTable("Users", "Users.sqlite"); // Deletes ALL from table specified in specified sqlite file
+                            DalHelper.DbDispose();
                         }
                     }
                     catch (Exception ex)
@@ -76,7 +77,7 @@ public class Program
                         response.OutputStream.Write(buffer, 0, buffer.Length);
                     }
                 }
-                Console.WriteLine("\nTask finished\n=========================\n");
+                Console.WriteLine("Task finished\n=========================\nAguardando requisições...\n");
             }
         }
     }
@@ -89,139 +90,155 @@ public class Program
     }
     public class DalHelper()
     {
-        internal static string caminho = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "xDataBase", "Users.sqlite");
-        internal static string connectionString = $"Data Source={caminho}";
+        internal static string caminho = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "xDataBase");
+        internal static string caminhoUsers = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "xDataBase", "Users.sqlite");
+        internal static string connectionString = $"Data Source={caminho}"; // aponta conexao para string caminho
         private static SQLiteConnection sqliteConnection = null!;
 
-        private static SQLiteConnection DbConnection()
+        private static SQLiteConnection DbConnection(string sqliteFile) // Abre conexao SQlite
         {
-            sqliteConnection = new SQLiteConnection(connectionString);
+            sqliteConnection = new SQLiteConnection($"{connectionString}\\{sqliteFile}");
             sqliteConnection.Open();
             return sqliteConnection;
         }
-        public static void DbDispose()
-        {
-            sqliteConnection.Dispose();
-        }
-
-
-        public static void CriarBancoSQLite()
-        {
+        public static void DbDispose() // Descarta conexao SQLite
+        { 
             try
             {
-                SQLiteConnection.CreateFile(caminho);
-                PrintCurrentLine("Criando arquivo sqlite...");
+                if (sqliteConnection != null && sqliteConnection.State != ConnectionState.Closed)
+                {
+                    sqliteConnection.Dispose();
+                    PrintCurrentLine("SQLite connection disposed successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Fail during connection disposal in void DbDispose:");
+                    PrintCurrentLine("SQLite connection was either already closed or not initialized.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                PrintCurrentLine("Falha ao tentar criar arquivo sqlite...");
+                PrintCurrentLine($"Error during connection disposal in void DbDispose: {ex.Message}");
                 throw;
             }
         }
-        
-        public static void CriarTabelaSQLite()
+
+        public static void CriarBancoSQLite(string fileName)  // CREATES IF NOT EXISTS {string file.sqlite}
         {
             try
             {
-                using(var cmd = DbConnection().CreateCommand())
+                if (!Path.Exists($"{caminho}\\{fileName}"))
                 {
-                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS Users(Id INTEGER NOT NULL, Name Varchar(50), Number Varchar(50), Password Varchar(50), PRIMARY KEY (Id))";
-                    cmd.ExecuteNonQuery();
+                    SQLiteConnection.CreateFile($"{caminho}\\{fileName}");
+                    PrintCurrentLine("CREATING SQLite file...");
                 }
-                PrintCurrentLine("Criando tabela...");
+                else throw new Exception($"File {fileName} already exists at path:\n{caminho}");
             }
             catch(Exception ex)
             {
-                PrintCurrentLine($"Erro em CREATE TABLE em public static void CriarTabelaSQLITE: {ex.Message}");
-                throw;
-            }
-        }
-        public static void DroparTabelaSQLite(string tableName)
-        {
-            try
-            {
-                using (var cmd = DbConnection().CreateCommand())
-                {
-                    cmd.CommandText = $"DROP TABLE IF EXISTS {tableName}";
-                    cmd.ExecuteNonQuery();
-                }
-                PrintCurrentLine($"Tabela {tableName} removida com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                PrintCurrentLine($"Erro em DROP TABLE em public static void DroparTabelaSQLite: {ex.Message}");
-                throw;
-            }
-        }
-        public static DataTable? GetUsers()
-        {
-            SQLiteDataAdapter? da;
-            DataTable dt = new();
-            try
-            {
-                using (var cmd = DbConnection().CreateCommand())
-                {
-                    
-                    cmd.CommandText = "SELECT * FROM Users";
-                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
-                    da.Fill(dt);
-                    PrintCurrentLine("Selecionando Users...");
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                PrintCurrentLine($"Erro em SELECT em public static DataTable AddGetUsers: {ex.Message}");
+                PrintCurrentLine($"Fail when trying to create file... {ex.Message}");
                 throw;
             }
         }
 
-        public static DataTable? GetUser(int Id){
-            SQLiteDataAdapter? da;
-            DataTable dt = new();
-            try
-            {
-                using (var cmd = DbConnection().CreateCommand())
-                {
-                    cmd.CommandText = "SELECT * FROM Users Where Id=" + Id;
-                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection());
-                    da.Fill(dt);
-                    PrintCurrentLine($"Seleciando User por ID({Id})...");
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                PrintCurrentLine($"Erro em SELECT em public static AddGetUser: {ex.Message}");
-                throw;
-            }
-            
-        }
-        public static void Add(User user)
+        public static void CriarTabelaSQLite(string tabelaName, string sqliteFile)  // CREATES TABLE IF NOT EXISTS {string tabelaName}
         {
             try
             {
-                using (var cmd = DbConnection().CreateCommand())
+                if (tabelaName != null && sqliteFile != null)
+                using(var cmd = DbConnection(sqliteFile).CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
+                    cmd.CommandText = $"CREATE TABLE IF NOT EXISTS {tabelaName}(Id INTEGER NOT NULL, Name Varchar(50), Number Varchar(50), Password Varchar(50), PRIMARY KEY (Id))";
+                    cmd.ExecuteNonQuery();
+                    PrintCurrentLine($"CREATING TABLE {tabelaName}...");
+                } 
+                else 
+                {
+                    Console.WriteLine($"Error during CREATE TABLE in void CriarTabelaSQLite:");
+                    PrintCurrentLine("Parameters(string tabelaName or string sqliteFile) are null.");
+                }
+                
+            }
+            catch(Exception ex)
+            {
+                PrintCurrentLine($"Error during CREATE TABLE in void CriarTabelaSQLITE: {ex.Message}");
+                throw;
+            }
+        }
+
+        public static void AddUser(User user, string sqliteFile) // INSERTS INTO Users values {User user.properties}
+        {
+            try
+            {
+                using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                {
+                    cmd.CommandText = $"INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
                     cmd.Parameters.AddWithValue("@Nome", user.Nome);
                     cmd.Parameters.AddWithValue("@Number", user.Number);
                     cmd.Parameters.AddWithValue("@Password", user.Password);
                     cmd.ExecuteNonQuery();
                 }
-                PrintCurrentLine("Inserindo into Users...");
+                PrintCurrentLine($"INSERTING INTO Users...");
             }
             catch(Exception ex)
             {
-                PrintCurrentLine($"Erro em INSERT INTO em public static void Add: {ex.Message}");
+                PrintCurrentLine($"Error during INSERT INTO Users in void AddUser: {ex.Message}");
                 throw;
             }
         }
-        public static void Update(User user)
+
+        public static DataTable GetUsers(string sqliteFile) // SELECTS ALL From Users
+        {
+            SQLiteDataAdapter da;
+            DataTable dt = new();
+            try
+            {
+                using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                {
+                    
+                    cmd.CommandText = "SELECT * FROM Users";
+                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
+                    da.Fill(dt);
+                    if (Path.Exists(caminhoUsers)) PrintCurrentLine("Selecting all from TABLE Users...");
+                    else throw new Exception($"Path not found ({caminhoUsers})");
+                    
+                    return dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Error during SELECT ALL FROM Users in DataTable GetUser: {ex.Message}");
+                throw;
+            }
+        }
+
+        public static DataTable GetUser(int id, string sqliteFile) // SELECTS ALL FROM Users WHERE Id={int id}
+        {
+            SQLiteDataAdapter da;
+            DataTable dt = new();
+            try
+            {
+                using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Users Where Id=" + id;
+                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
+                    da.Fill(dt);
+                    PrintCurrentLine($"SELECTING User by ID ({id})...");
+                    return dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Error SELECTING User by ID in DataTable GetUser: {ex.Message}");
+                throw;
+            }
+            
+        }
+        public static void UpdateUsers(User user, string sqliteFile) // UPDATES Users no arquivo {sqliteFile} 
         {
             try 
             {
-                using (SQLiteCommand cmd = new(DbConnection()))
+                using (SQLiteCommand cmd = new(DbConnection(sqliteFile)))
                 {
                     cmd.CommandText = "UPDATE Users SET Name=@Name, Number=@Number, Password=@Password WHERE Id=@Id";
                     cmd.Parameters.AddWithValue("@Name", user.Nome);
@@ -229,54 +246,71 @@ public class Program
                     cmd.Parameters.AddWithValue("@Password", user.Password);
                     cmd.ExecuteNonQuery();
                 }
-                PrintCurrentLine("Realizando UPDATE em users...");
+                PrintCurrentLine("UPDATING Users...");
             }
             catch (Exception ex)
             {
-                PrintCurrentLine($"Erro em UPDATE em public static void Add: {ex.Message}");
+                PrintCurrentLine($"Error during UPDATE Users in void UpdateUsers: {ex.Message}");
                 throw;
             }
         }
-        public static void Delete(int Id)
+
+        public static void DropTable(string tableName, string sqliteFile) // DROPS TABLE IF EXISTS {string tableName}
+        {
+            try
+            {
+                using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                {
+                    cmd.CommandText = $"DROP TABLE IF EXISTS {tableName}";
+                    cmd.ExecuteNonQuery();
+                }
+                PrintCurrentLine($"TABLE {tableName} was removed successfully.");
+            }
+            catch (Exception ex)
+            {
+                PrintCurrentLine($"Error during DROP TABLE {tableName} in void DropTable: {ex.Message}");
+                throw;
+            }
+        }
+    
+        public static void DeleteUserById(int id, string sqliteFile) // DELETES FROM Users by ID {int id}
         {
             try 
             {
-                using(SQLiteCommand cmd = new(DbConnection()))
+                using(SQLiteCommand cmd = new(DbConnection(sqliteFile)))
                 {
                     cmd.CommandText="DELETE FROM Users WHERE Id=@Id";
-                    cmd.Parameters.AddWithValue("@Id", Id);
+                    cmd.Parameters.AddWithValue("@Id", id);
                     cmd.ExecuteNonQuery();
                 }
-                PrintCurrentLine($"DELETANDO FROM Users WHERE Id = {Id}...");
+                PrintCurrentLine($"DELETING FROM Users WHERE Id = ({id})...");
             }
             catch(Exception ex)
             {
-                PrintCurrentLine($"Erro em DELETE em public static void Delete: {ex.Message}");
+                PrintCurrentLine($"Error during DELETE execution in void DeleteUserById: {ex.Message}");
                 throw;
             }
         }
-        public static void DeleteAll()
+        public static void DeleteAllFromTable(string tableName, string sqliteFile) // DELETES ALL TABLES FROM Users
         {
             try 
             {
-                using (SQLiteCommand cmd = new(DbConnection()))
+                using (SQLiteCommand cmd = new(DbConnection(sqliteFile)))
                 {
-                    cmd.CommandText = "DELETE FROM Users";
+                    cmd.CommandText = $"DELETE FROM {tableName}";
                     cmd.ExecuteNonQuery();
                 }
-                PrintCurrentLine($"DELETANDO FROM Users...(ALL)");
+                PrintCurrentLine($"DELETING ALL TABLES FROM {tableName}...");
             }
             catch (Exception ex)
             {
-                PrintCurrentLine($"Erro em DELETE ALL em public static void DeleteAll: {ex.Message}");
+                PrintCurrentLine($"Error during DELETE FROM {tableName} in void DeleteAllFromTable: {ex.Message}");
                 throw;
             }
         }
-        
     }
     public static void PrintCurrentLine(string comentario, [CallerLineNumber] int lineNumber = 0)
     {
-        Console.WriteLine($"{comentario} ln:{lineNumber}");
+        Console.WriteLine($"{comentario} ln:{lineNumber}\n");
     }
 }
-
