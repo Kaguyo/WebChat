@@ -47,9 +47,10 @@ public class Program
             {
                 if (request.HttpMethod == "POST" && request.ContentType.Contains("application/json"))
                 {
-                    Console.Clear();
+                    
                     try
                     {
+                        Console.Clear();
                         using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
@@ -291,7 +292,7 @@ public class Program
                 throw;
             }
         }
-        public static void DeleteAllFromTable(string tableName, string sqliteFile) // DELETES ALL TABLES FROM Users
+        public static void DeleteAllFromTable(string tableName, string sqliteFile) // DELETES ALL TABLES FROM {string tableName}
         {
             try 
             {

@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 2000;
+const PORT = 2200;
 
 const server = http.createServer((req, res) => {
     let filePath;
@@ -13,8 +13,8 @@ const server = http.createServer((req, res) => {
     } else if (req.url === '/signup'){
         filePath = path.join(__dirname, '..', 'views', 'signup.html')
 
-    } else if (req.url === '/login') {
-        filePath = path.join(__dirname, '..', 'views', 'login.html');
+    } else if (req.url === '/signin') {
+        filePath = path.join(__dirname, '..', 'views', 'signin.html');
 
     } else if (req.url.startsWith('/assets/')){
         filePath = path.join(__dirname, '..', req.url);
@@ -25,13 +25,13 @@ const server = http.createServer((req, res) => {
     } else if (req.url === '/scripts/signUp.js'){
         filePath = path.join(__dirname, 'signUp.js');
         
-    } else if (req.url === '/scripts/usuario.js'){
-        filePath = path.join(__dirname, "usuario.js");
+    } else if (req.url === '/scripts/signIn.js'){
+        filePath = path.join(__dirname, "signIn.js");
 
     } else { // else que vai levar pra pagina de erro existente em views
         filePath = path.join(__dirname, '..', 'views', 'error.html');
     }
-    console.log(req.url);
+    console.log(__dirname);
 
     const extname = path.extname(filePath);
 
