@@ -50,7 +50,7 @@ public class Program
                 {
                     try
                     {
-                        Console.Clear();
+                        // Console.Clear();
                         using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
@@ -167,10 +167,20 @@ public class Program
             }
         }
 
-        public static void AddUser(User user, string sqliteFile) // INSERTS INTO Users values {User user.properties}
-        {
-            try
-            {
+        public static void AddUser(User user, string sqliteFile) // Checks if the number was entered into the database, if not, INSERTS INTO Users values {User user.properties}
+        {   
+            SQLiteDataAdapter da;
+            DataTable dt = new();
+            using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM Users Where Number=" + user.Number;
+                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
+                    da.Fill(dt);
+                    PrintCurrentLine($"SELECTING User by Number ({user.Number})...");
+                }
+            if(dt.Rows.Count == 0){
+                try
+                {
                 using (var cmd = DbConnection(sqliteFile).CreateCommand())
                 {
                     cmd.CommandText = $"INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
@@ -180,13 +190,18 @@ public class Program
                     cmd.ExecuteNonQuery();
                 }
                 PrintCurrentLine($"INSERTING INTO Users...");
-            }
-            catch(Exception ex)
-            {
+                }
+            
+            catch(Exception ex){
                 PrintCurrentLine($"Error during INSERT INTO Users in void AddUser: {ex.Message}");
                 throw;
+                }
+            }else{
+                PrintCurrentLine($"The phone number already have a account!!");
             }
+
         }
+            
 
         public static DataTable GetUsers(string sqliteFile) // SELECTS ALL From Users
         {
