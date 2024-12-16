@@ -48,7 +48,6 @@ public class Program
             {
                 if (request.HttpMethod == "POST" && request.ContentType.Contains("application/json"))
                 {
-                    Console.Clear();
                     try
                     {
                         Console.Clear();
