@@ -47,3 +47,6 @@ CadrastroBtn.onclick = function (){
         console.log(`Error details: ${err}`);
     }
 }
+function redirecionar(){
+    window.location="http://localhost:2200/signin";
+}
