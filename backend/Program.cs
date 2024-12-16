@@ -11,6 +11,7 @@ public class Program
     public static void Main(string[] args)
     {
         const int PORT = 5000;
+        
         HttpListener listener = new();
         listener.Prefixes.Add($"http://localhost:{PORT}/");
         listener.Start();
@@ -47,9 +48,9 @@ public class Program
             {
                 if (request.HttpMethod == "POST" && request.ContentType.Contains("application/json"))
                 {
-                    Console.Clear();
                     try
                     {
+                        Console.Clear();
                         using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
