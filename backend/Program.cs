@@ -172,32 +172,35 @@ public class Program
             SQLiteDataAdapter da;
             DataTable dt = new();
             using (var cmd = DbConnection(sqliteFile).CreateCommand())
-                {
-                    cmd.CommandText = "SELECT * FROM Users Where Number=" + user.Number;
-                    da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
-                    da.Fill(dt);
-                    PrintCurrentLine($"SELECTING User by Number ({user.Number})...");
-                }
-            if(dt.Rows.Count == 0){
+            {
+                cmd.CommandText = $"SELECT * FROM Users Where Number={user.Number}";
+                da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
+                da.Fill(dt);
+                PrintCurrentLine($"SELECTING User by Number ({user.Number})...");
+            }
+            if (dt.Rows.Count == 0)
+            {
                 try
                 {
-                using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                    using (var cmd = DbConnection(sqliteFile).CreateCommand())
+                    {
+                        cmd.CommandText = $"INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
+                        cmd.Parameters.AddWithValue("@Nome", user.Nome);
+                        cmd.Parameters.AddWithValue("@Number", user.Number);
+                        cmd.Parameters.AddWithValue("@Password", user.Password);
+                        cmd.ExecuteNonQuery();
+                    }
+                    PrintCurrentLine($"INSERTING INTO Users...");
+                }
+                catch(Exception ex)
                 {
-                    cmd.CommandText = $"INSERT INTO Users(Name, Number, Password) values (@Nome, @Number, @Password)";
-                    cmd.Parameters.AddWithValue("@Nome", user.Nome);
-                    cmd.Parameters.AddWithValue("@Number", user.Number);
-                    cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.ExecuteNonQuery();
+                    PrintCurrentLine($"Error during INSERT INTO Users in void AddUser: {ex.Message}");
+                    throw;
                 }
-                PrintCurrentLine($"INSERTING INTO Users...");
-                }
-            
-            catch(Exception ex){
-                PrintCurrentLine($"Error during INSERT INTO Users in void AddUser: {ex.Message}");
-                throw;
-                }
-            }else{
-                PrintCurrentLine($"The phone number already have a account!!");
+            }
+            else
+            {
+                PrintCurrentLine($"The phone number already has an account!!");
             }
 
         }
