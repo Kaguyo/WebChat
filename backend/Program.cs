@@ -50,7 +50,7 @@ public class Program
                 {
                     try
                     {
-                        Console.Clear();
+                        // Console.Clear();
                         using (StreamReader reader = new(request.InputStream, Encoding.UTF8))
                         {
                             string json = reader.ReadToEnd();
