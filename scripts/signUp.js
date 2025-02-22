@@ -1,3 +1,13 @@
+class User {
+    constructor(Nome, Number, Password, Password2){
+        this.Nome = Nome;
+        this.Number = Number;
+        this.Password = Password;
+        this.Password2 = Password2;
+    }  
+}
+
+
 const CadrastroBtn = document.getElementById("CriarContaBtn");
 const username = document.getElementById("username");
 const phoneNumber = document.getElementById("phoneNumber");

@@ -1,3 +1,10 @@
+class Login {
+    constructor(Nome, Password){
+        this.Nome = Nome;
+        this.Password = Password;
+    }  
+}
+
 const LoginBtn = document.getElementById("LoginBtn");
 const username = document.getElementById("username");
 const password = document.getElementById("password");
@@ -13,9 +20,9 @@ password.addEventListener('input', (event) => {
     Password = event.target.value;
 });
 
-CadrastroBtn.onclick = function (){
+LoginBtn.onclick = function (){
     try {
-        const objetoLogin = new Login(Username, Password,);
+        const objetoLogin = new Login(Username, Password);
         const jsonLogin = JSON.stringify(objetoLogin);
         console.log(objetoLogin);
         console.log(jsonLogin);

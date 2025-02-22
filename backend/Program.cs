@@ -57,20 +57,35 @@ public class Program
                             User? user = JsonSerializer.Deserialize<User>(json);
                             if (!File.Exists(DalHelper.caminhoUsers))
                             {
-                                DalHelper.CriarBancoSQLite(DalHelper.caminhoUsers);
+                                DalHelper.CriarBancoSQLite("Users.sqlite");
                             }
-                            if (!File.Exists(DalHelper.caminhoUsers)) DalHelper.CriarTabelaSQLite("Users", "Users.sqlite"); // CREATE TABLE IF NOT EXISTS (tabelaName)
-                            if (user != null && user.Nome != "" && user.Number != "") DalHelper.AddUser(user, "Users.sqlite") 
-                            byte[] buffer = Encoding.UTF8.GetBytes("Usuario cadrastado com sucesso!")
-                            response.OutputStream.Write(buffer, 0, buffer.Length); // INSERTS INTO Users (object user)
-                            if (user!= null && user.Number = null) {
+                            if (File.Exists(DalHelper.caminhoUsers)){
 
-                                string resultado = DalHelper.LoginUser(user, "Users.sqlite")
-                                byte[] buffer = Encoding.UTF8.GetBytes(resultado)
-                                response.OutputStream.Write(buffer, 0, buffer.Length)
+                                DalHelper.CriarTabelaSQLite("Users", "Users.sqlite"); // CREATE TABLE IF NOT EXISTS (tabelaName)
+
+                            } 
+
+                            // if (user != null && user.Nome != "" && user.Number != ""){
+
+                            //     DalHelper.AddUser(user, "Users.sqlite"); 
+                            //     byte[] buffer = Encoding.UTF8.GetBytes("Usuario cadrastado com sucesso!");
+                            //     response.OutputStream.Write(buffer, 0, buffer.Length); // INSERTS INTO Users (object user)
+                            // } 
+
+                            if (user != null && user.Nome != "" && user.Password != "")
+                            {
+                                try
+                                {                      
+                                    string resultado = DalHelper.LoginUser(user, "Users.sqlite");
+                                    byte[] buffer2 = Encoding.UTF8.GetBytes(resultado);
+                                    response.OutputStream.Write(buffer2, 0, buffer2.Length);
+
+                                }catch(Exception ex){
+
+                                    Console.WriteLine($"Erro ao realizar o login {ex.Message}");
+                                }
                             }
 
-                            
                             // DalHelper.DropTable("Users","Users.sqlite"); // Drops table by Table name
                             // DalHelper.DeleteAllFromTable("Users", "Users.sqlite"); // Deletes ALL from table specified in specified sqlite file
                             DalHelper.DbDispose();
@@ -213,25 +228,27 @@ public class Program
 
         }
 
-        public static LoginUser (User user, string sqliteFile ){
+        public static string LoginUser (User user, string sqliteFile ){
             SQLiteDataAdapter da;
             DataTable dt = new();
             using (var cmd = DbConnection(sqliteFile).CreateCommand())
             {
-                cmd.CommandText = $"SELECT * FROM Users WHERE Nome={user.Nome} AND Password={user.Password} ";
+                cmd.CommandText = $"SELECT * FROM Users WHERE Name LIKE '%{user.Nome}%' AND Password={user.Password}";
                 da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
                 da.Fill(dt);
-                PrintCurrentLine($"SELECTING User by Name ({user.Name}) and Password ({user.Password})...");
+                PrintCurrentLine($"SELECTING User by Name ({user.Nome}) and Password ({user.Password})...");
             }
             if (dt.Rows.Count != 0)
             {
-                string resposta = "Usuario Logado";
+                var resposta = "Usuario Logado";
+                Console.WriteLine(resposta);
                 return resposta;
 
             }
             else
             {
-                string resposta = "Senha Errada";
+                string resposta = "Senha ou Usuario errado";
+                Console.WriteLine(resposta);
                 return resposta;
 
             }
