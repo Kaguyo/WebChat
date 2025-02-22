@@ -60,9 +60,17 @@ public class Program
                                 DalHelper.CriarBancoSQLite(DalHelper.caminhoUsers);
                             }
                             if (!File.Exists(DalHelper.caminhoUsers)) DalHelper.CriarTabelaSQLite("Users", "Users.sqlite"); // CREATE TABLE IF NOT EXISTS (tabelaName)
-                            if (user != null && user.Nome != "") DalHelper.AddUser(user, "Users.sqlite"); // INSERTS INTO Users (object user)
-                            byte[] buffer = Encoding.UTF8.GetBytes("Dados recebidos com sucesso");
-                            response.OutputStream.Write(buffer, 0, buffer.Length);
+                            if (user != null && user.Nome != "" && user.Number != "") DalHelper.AddUser(user, "Users.sqlite") 
+                            byte[] buffer = Encoding.UTF8.GetBytes("Usuario cadrastado com sucesso!")
+                            response.OutputStream.Write(buffer, 0, buffer.Length); // INSERTS INTO Users (object user)
+                            if (user!= null && user.Number = null) {
+
+                                string resultado = DalHelper.LoginUser(user, "Users.sqlite")
+                                byte[] buffer = Encoding.UTF8.GetBytes(resultado)
+                                response.OutputStream.Write(buffer, 0, buffer.Length)
+                            }
+
+                            
                             // DalHelper.DropTable("Users","Users.sqlite"); // Drops table by Table name
                             // DalHelper.DeleteAllFromTable("Users", "Users.sqlite"); // Deletes ALL from table specified in specified sqlite file
                             DalHelper.DbDispose();
@@ -203,6 +211,30 @@ public class Program
                 PrintCurrentLine($"The phone number already has an account!!");
             }
 
+        }
+
+        public static LoginUser (User user, string sqliteFile ){
+            SQLiteDataAdapter da;
+            DataTable dt = new();
+            using (var cmd = DbConnection(sqliteFile).CreateCommand())
+            {
+                cmd.CommandText = $"SELECT * FROM Users WHERE Nome={user.Nome} AND Password={user.Password} ";
+                da = new SQLiteDataAdapter(cmd.CommandText, DbConnection(sqliteFile));
+                da.Fill(dt);
+                PrintCurrentLine($"SELECTING User by Name ({user.Name}) and Password ({user.Password})...");
+            }
+            if (dt.Rows.Count != 0)
+            {
+                string resposta = "Usuario Logado";
+                return resposta;
+
+            }
+            else
+            {
+                string resposta = "Senha Errada";
+                return resposta;
+
+            }
         }
             
 
