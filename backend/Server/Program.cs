@@ -23,16 +23,39 @@ app.UseCors("AllowFrontend");
 
 app.MapPost("/users", (UserUseCase userUseCase, User user) =>
 {
-    try
-    {   
-        userUseCase.CreateUser(user.Username, user.Number, user.Password);
-        return Results.Created($"/users/{user.Number}", user);
+
+    if(!string.IsNullOrWhiteSpace(user.Username)){
+
+        try
+        {   
+            Console.WriteLine("Verificacao deu errrado");
+            userUseCase.CreateUser(user.Username, user.Number, user.Password);
+            return Results.Created($"/users/{user.Number}", user);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro {ex.Message}");
+            return Results.BadRequest(new { ex.Message });
+        }
+
+    }else{
+        try
+        {
+            Console.WriteLine("Até aqui deu certo kkkkkkk");
+            var login = userUseCase.GetUserByNumber(user.Number);
+            Console.WriteLine(login);
+
+            return Results.Created("", login);
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro {ex.Message}");
+            return Results.BadRequest(new { ex.Message });
+        }
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Erro {ex.Message}");
-        return Results.BadRequest(new { ex.Message });
-    }
+
+    
 });
 
 app.MapGet("/users/{number}", (UserUseCase userUseCase, string number) =>

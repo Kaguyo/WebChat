@@ -119,3 +119,4 @@ function redirecionar(){
     else if (liveServer) window.location = `http://127.0.0.1:${PORT}/views/signin.html`; /* Enviando pra 127.0.0.1 apenas pra manter semantica do live server
     //                                                                                      mas poderia ser localhost. */
 }
+

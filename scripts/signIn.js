@@ -1,46 +1,42 @@
 class Login {
-    constructor(Nome, Password){
-        this.Nome = Nome;
+    constructor(PhoneNumber, Password){
+        this.PhoneNumber = PhoneNumber;
         this.Password = Password;
     }  
 }
 
 const LoginBtn = document.getElementById("LoginBtn");
-const username = document.getElementById("username");
+const phonenumber = document.getElementById("username");
 const password = document.getElementById("password");
 
-let Username = "";
+let PhoneNumber = "";
 let Password = "";
 
 
-username.addEventListener('input', (event) => {
-    Username = event.target.value;
+phonenumber.addEventListener('input', (event) => {
+    PhoneNumber = event.target.value;
 });
 password.addEventListener('input', (event) => {
     Password = event.target.value;
 });
 
-LoginBtn.onclick = function (){
-    try {
-        const objetoLogin = new Login(Username, Password);
-        const jsonLogin = JSON.stringify(objetoLogin);
-        console.log("Objeto login instanciado: ",objetoLogin);
-        console.log("Json enviado: ",jsonLogin);
-        fetch("http://localhost:5067/users", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: jsonLogin
-        })
-        .then(data => {
-            console.log("Dados recebidos:", data);
-        })
-        .catch(error => {
-            console.log("Erro ao enviar dados:", error);
-        });
-    } catch(err){
-        console.log(`Error. User wasn't created. Error: ${err.message}`);
-        console.log(`Error details: ${err}`);
+const API_URL = 'http://localhost:5067';
+
+LoginBtn.onclick = async function ()    
+{
+    try{
+
+        const userLogin = new Login(PhoneNumber, Password);
+        console.log(userLogin);
+        console.log("USERNAME :", userLogin.PhoneNumber);
+        const response = await axios.post(`${API_URL}/users/`, userLogin);
+        console.log(response.data);
+        return response.data;
+
+    } catch (error) {
+        
+        console.error('Error during sign up:', error);
+        throw error;
     }
 }
+
