@@ -65,20 +65,38 @@ public class Program
 
                             } 
 
-                            // if (user != null && user.Nome != "" && user.Number != ""){
+                            if (user != null && user.Nome != "" && (user.Number != "" && user.Number != null)){
 
-                            //     DalHelper.AddUser(user, "Users.sqlite"); 
-                            //     byte[] buffer = Encoding.UTF8.GetBytes("Usuario cadrastado com sucesso!");
-                            //     response.OutputStream.Write(buffer, 0, buffer.Length); // INSERTS INTO Users (object user)
-                            // } 
+                                DalHelper.AddUser(user, "Users.sqlite"); 
+                                byte[] buffer = Encoding.UTF8.GetBytes("Usuario cadrastado com sucesso!");
+                                response.StatusCode = 200;
+                                response.ContentType = "application/json";
+                                response.OutputStream.Write(buffer, 0, buffer.Length); // INSERTS INTO Users (object user)
+                            } 
 
                             if (user != null && user.Nome != "" && user.Password != "")
                             {
                                 try
-                                {                      
+                                {    
+
+                                    var responseObject = new
+                                    {
+                                        message = "Usuário cadastrado com sucesso!",
+                                        success = true,
+                                        data = new { id = 1, name = "João" }
+                                    };
+
+                                    // Serializando o objeto para JSON
+                                    string jsonResponse = JsonSerializer.Serialize(responseObject);
+
                                     string resultado = DalHelper.LoginUser(user, "Users.sqlite");
-                                    byte[] buffer2 = Encoding.UTF8.GetBytes(resultado);
+                                    byte[] buffer2 = Encoding.UTF8.GetBytes(jsonResponse);
+                                    response.StatusCode = 200;
+                                    response.ContentType = "application/json";
                                     response.OutputStream.Write(buffer2, 0, buffer2.Length);
+                                    foreach (byte b in buffer2){
+                                        Console.Write(b);
+                                    }
 
                                 }catch(Exception ex){
 

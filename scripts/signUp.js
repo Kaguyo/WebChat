@@ -9,6 +9,7 @@ class User {
 
 
 const CadrastroBtn = document.getElementById("CriarContaBtn");
+const RedirecionarBtn = document.getElementById("PossuiContaBtn");
 const username = document.getElementById("username");
 const phoneNumber = document.getElementById("phoneNumber");
 const password = document.getElementById("password");
@@ -57,7 +58,7 @@ CadrastroBtn.onclick = function (){
         console.log(`Error details: ${err}`);
     }
 }
-function redirecionar(){
+RedirecionarBtn.onclick = function (){
     let urlAtual = window.location.href; // URL completo
     let treatedURL; // Usado pra receber PORT apartir da PORT localizada no URL
     let PORT = "";
