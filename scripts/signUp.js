@@ -1,6 +1,6 @@
 class User {
-    constructor(Nome, Number, Password, Password2){
-        this.Nome = Nome;
+    constructor(Username, Number, Password, Password2){
+        this.Username = Username;
         this.Number = Number;
         this.Password = Password;
         this.Password2 = Password2;
@@ -32,31 +32,52 @@ password2.addEventListener('input', (event) => {
     Password2 = event.target.value;
 });
 
-CadrastroBtn.onclick = function (){
-    try {
-        const objetoUsuario = new User(Username, PhoneNumber, Password, Password2);
-        const jsonUsuario = JSON.stringify(objetoUsuario);
-        console.log(objetoUsuario);
-        console.log(jsonUsuario);
-        fetch("http://localhost:5000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: jsonUsuario
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Dados recebidos:", data);
-        })
-        .catch(error => {
-            console.log("Erro ao enviar dados:", error);
-        });
-    } catch(err){
-        console.log(`Error. User wasn't created. Error: ${err.message}`);
-        console.log(`Error details: ${err}`);
+// CadrastroBtn.onclick = function (){
+//     try {
+//         const objetoUsuario = new User(Username, PhoneNumber, Password, Password2);
+//         const jsonUsuario = JSON.stringify(objetoUsuario);
+//         console.log(objetoUsuario);
+//         console.log(jsonUsuario);
+//         fetch("http://localhost:5067/", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: jsonUsuario
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log("Dados recebidos:", data);
+//         })
+//         .catch(error => {
+//             console.log("Erro ao enviar dados:", error);
+//         });
+//     } catch(err){
+//         console.log(`Error. User wasn't created. Error: ${err.message}`);
+//         console.log(`Error details: ${err}`);
+//     }
+// }
+
+const API_URL = 'http://localhost:5067';
+
+CadrastroBtn.onclick = async function ()    
+{
+    try{
+
+        const userData = new User(Username, PhoneNumber, Password, Password2);
+        console.log(userData);
+        console.log("USERNAME :", userData.Nome);
+        const response = await axios.post(`${API_URL}/users`, userData);
+        console.log(response.data);
+        return response.data;
+
+    } catch (error) {
+        
+        console.error('Error during sign up:', error);
+        throw error;
     }
 }
+
 function redirecionar(){
     let urlAtual = window.location.href; // URL completo
     let treatedURL; // Usado pra receber PORT apartir da PORT localizada no URL
