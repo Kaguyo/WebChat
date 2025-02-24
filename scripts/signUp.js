@@ -66,7 +66,7 @@ CadrastroBtn.onclick = async function ()
 
         const userData = new User(Username, PhoneNumber, Password, Password2);
         console.log(userData);
-        console.log("USERNAME :", userData.Nome);
+        console.log("USERNAME :", userData.Username);
         const response = await axios.post(`${API_URL}/users`, userData);
         console.log(response.data);
         return response.data;
