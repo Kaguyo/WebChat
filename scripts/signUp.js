@@ -89,6 +89,7 @@ function redirecionar(){
         }
         liveServer = true;
     }
+
     // console.log("URL COMPLETO: ", urlAtual);
     // console.log("URL SEM HTTP: ", treatedURL);
     // console.log("PORTA: ", PORT);

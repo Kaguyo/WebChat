@@ -24,16 +24,15 @@ LoginBtn.onclick = function (){
     try {
         const objetoLogin = new Login(Username, Password);
         const jsonLogin = JSON.stringify(objetoLogin);
-        console.log(objetoLogin);
-        console.log(jsonLogin);
-        fetch("http://localhost:5000/", {
+        console.log("Objeto login instanciado: ",objetoLogin);
+        console.log("Json enviado: ",jsonLogin);
+        fetch("http://localhost:5067/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: jsonLogin
         })
-        .then(response => response.json())
         .then(data => {
             console.log("Dados recebidos:", data);
         })
