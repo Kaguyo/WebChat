@@ -42,9 +42,9 @@ app.MapPost("/users", async (UserUseCase userUseCase, User user) =>
 });
 
 
-app.MapGet("/users/{number}", async (UserUseCase userUseCase, int id) =>
+app.MapGet("/users/{number}", async (UserUseCase userUseCase, string number) =>
 {
-    var user = await userUseCase.GetUserId(id);
+    var user = await userUseCase.GetUserIdByNumber(number);
     return user != null ? Results.Ok(user) : Results.NotFound(new { Message = "User not found." });
 });
 

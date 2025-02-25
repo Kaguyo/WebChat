@@ -24,6 +24,9 @@ namespace Server.UseCases
             return await _userRepository.Get(id);
         }
 
+        public async Task<User?> GetUserIdByNumber(string number){
+            return await _userRepository.Get(number);
+        }
         public async Task UpdateUser(User user)
         {
             await _userRepository.Update(user);
