@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Server.Domain;
+using Server.Domain.Entities;
 
 namespace Server.UserRepository
 {
@@ -20,9 +20,15 @@ namespace Server.UserRepository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+             modelBuilder.Entity<User>()
+                .Property(u => u.Id)
+                .ValueGeneratedOnAdd();
+
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
+                    Id = 1,
                     Username = "Fabricio",
                     Number = "38123456789",
                     Password = "123456"

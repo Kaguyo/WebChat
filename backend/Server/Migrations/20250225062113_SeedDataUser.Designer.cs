@@ -11,7 +11,7 @@ using Server.UserRepository;
 namespace Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250225004248_SeedDataUser")]
+    [Migration("20250225062113_SeedDataUser")]
     partial class SeedDataUser
     {
         /// <inheritdoc />
@@ -24,33 +24,38 @@ namespace Server.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Server.Domain.User", b =>
+            modelBuilder.Entity("Server.Domain.Entities.User", b =>
                 {
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("number");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password");
 
-                    b.Property<string>("ProfileImage")
-                        .HasColumnType("text");
+                    b.Property<string>("Username")
+                        .HasColumnType("text")
+                        .HasColumnName("username");
 
-                    b.HasKey("Username");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
-                            Username = "Fabricio",
+                            Id = 1,
                             Number = "38123456789",
                             Password = "123456",
-                            ProfileImage = ""
+                            Username = "Fabricio"
                         });
                 });
 #pragma warning restore 612, 618

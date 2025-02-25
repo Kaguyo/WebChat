@@ -1,4 +1,6 @@
-using Server.Domain;
+using Microsoft.EntityFrameworkCore;
+using Server.Domain.Entities;
+using Server.Repositories;
 using Server.UseCases;
 using Server.UserRepository;
 
@@ -14,54 +16,36 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
-builder.Services.AddSingleton<UserUseCase>();
+builder.Services.AddDbContext<AppDbContext>(x => 
+    x.UseNpgsql(@"Host=localhost;Port=5433;Username=docker;Password=docker;Database=connect"));
+
+
+
+builder.Services.AddScoped<UserUseCase>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
 app.UseCors("AllowFrontend");
 
-app.MapPost("/users", (UserUseCase userUseCase, User user) =>
+app.MapPost("/users", async (UserUseCase userUseCase, User user) =>
 {
-
-    if(!string.IsNullOrWhiteSpace(user.Username)){
-
-        try
-        {   
-            Console.WriteLine("Verificacao deu errrado");
-            userUseCase.CreateUser(user.Username, user.Number, user.Password);
-            return Results.Created($"/users/{user.Number}", user);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro {ex.Message}");
-            return Results.BadRequest(new { ex.Message });
-        }
-
-    }else{
-        try
-        {
-            Console.WriteLine("Até aqui deu certo kkkkkkk");
-            var login = userUseCase.GetUserByNumber(user.Number);
-            Console.WriteLine(login);
-
-            return Results.Created("", login);
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro {ex.Message}");
-            return Results.BadRequest(new { ex.Message });
-        }
+    try
+    {
+        await userUseCase.CreateUser(user.Username, user.Number, user.Password);
+        return Results.Created($"/users/{user.Number}", user);
     }
-
-    
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { ex.Message });
+    }
 });
 
-app.MapGet("/users/{number}", (UserUseCase userUseCase, string number) =>
+
+app.MapGet("/users/{number}", async (UserUseCase userUseCase, int id) =>
 {
-    var user = userUseCase.GetUserByNumber(number);
-    return user is not null ? Results.Json(user) : Results.NotFound(new { Message = "User not found." });
+    var user = await userUseCase.GetUserId(id);
+    return user != null ? Results.Ok(user) : Results.NotFound(new { Message = "User not found." });
 });
 
 app.MapPut("/users", (UserUseCase userUseCase, User user) =>
@@ -77,11 +61,11 @@ app.MapPut("/users", (UserUseCase userUseCase, User user) =>
     }
 });
 
-app.MapDelete("/users/{number}", (UserUseCase userUseCase, string number) =>
+app.MapDelete("/users/{number}", (UserUseCase userUseCase, int id) =>
 {
     try
     {
-        userUseCase.DeleteUser(number);
+        userUseCase.DeleteUser(id);
         return Results.NoContent();
     }
     catch (Exception ex)

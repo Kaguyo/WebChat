@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -14,20 +15,21 @@ namespace Server.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    Number = table.Column<string>(type: "text", nullable: false),
-                    Password = table.Column<string>(type: "text", nullable: false),
-                    ProfileImage = table.Column<string>(type: "text", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    username = table.Column<string>(type: "text", nullable: true),
+                    number = table.Column<string>(type: "text", nullable: true),
+                    password = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Username);
+                    table.PrimaryKey("PK_Users", x => x.id);
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Username", "Number", "Password", "ProfileImage" },
-                values: new object[] { "Fabricio", "38123456789", "123456", "" });
+                columns: new[] { "id", "number", "password", "username" },
+                values: new object[] { 1, "38123456789", "123456", "Fabricio" });
         }
 
         /// <inheritdoc />

@@ -1,52 +1,42 @@
-using Server.UserRepository;
-using Server.Domain;
+using Server.Domain.Entities;
+using Server.Repositories;
+
 
 
 namespace Server.UseCases
 {
-    public class UserUseCase
+
+    public class UserUseCase(IUserRepository userRepository)
     {
-        
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository = userRepository;
 
-        public UserUseCase(IUserRepository repository)
+        public async Task CreateUser(string username, string number, string password)
         {
-            _repository = repository;
+            var user = new User { Username = username, Number = number, Password = password };
+            
+            ValidateUser(user);
+            await _userRepository.Create(user);
+            
         }
 
-        public void CreateUser(string username, string number, string password)
+        public async Task<User?> GetUserId(int id)
         {
-            var user = new User
+            return await _userRepository.Get(id);
+        }
+
+        public async Task UpdateUser(User user)
+        {
+            await _userRepository.Update(user);
+        }
+
+        public async Task DeleteUser(int id)
+        {
+            var user = await _userRepository.Get(id);
+            if (user != null)
             {
-                Username = username,
-                Number = number,
-                Password = password
-            };
-
-            ValidateUser(user);
-            _repository.Add(user);
+                await _userRepository.Delete(user);
+            }
         }
-
-        public User? GetUserByNumber(string number)
-        {
-            return _repository.GetByNumber(number);
-        }
-
-        public void UpdateUser(User user)
-        {
-            ValidateUser(user);
-            _repository.Update(user);
-        }
-
-        public void DeleteUser(string number)
-        {
-            var user = _repository.GetByNumber(number);
-            if (user == null)
-                throw new ArgumentException("User not found.");
-
-            _repository.Delete(user);
-        }
-
         private void ValidateUser(User user)
         {
             if (string.IsNullOrWhiteSpace(user.Username))
@@ -62,4 +52,6 @@ namespace Server.UseCases
                 throw new ArgumentException("Password must be at least 6 characters long.");
         }
     }
+
+
 }
