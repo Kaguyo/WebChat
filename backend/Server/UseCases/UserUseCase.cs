@@ -10,13 +10,16 @@ namespace Server.UseCases
     {
         private readonly IUserRepository _userRepository = userRepository;
 
-        public async Task CreateUser(string username, string number, string password)
+        public async Task<int> CreateUser(string username, string number, string password)
         {
             var user = new User { Username = username, Number = number, Password = password };
-            
+
             ValidateUser(user);
+            Console.WriteLine("Validação de usuario concluida!");
             await _userRepository.Create(user);
-            
+            return user.Id;
+
+
         }
 
         public async Task<User?> GetUserId(int id)
@@ -40,7 +43,7 @@ namespace Server.UseCases
                 await _userRepository.Delete(user);
             }
         }
-        private void ValidateUser(User user)
+        private static void ValidateUser(User user)
         {
             if (string.IsNullOrWhiteSpace(user.Username))
                 throw new ArgumentException("Username is required.");

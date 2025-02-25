@@ -6,7 +6,7 @@ class Login {
 }
 
 const LoginBtn = document.getElementById("LoginBtn");
-const phonenumber = document.getElementById("username");
+const phonenumber = document.getElementById("phoneNumber");
 const password = document.getElementById("password");
 
 let PhoneNumber = "";

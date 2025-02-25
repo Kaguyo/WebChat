@@ -18,7 +18,7 @@ namespace Server.Repositories
 
         public async Task Delete(User user)
         {
-            _appDbContext.Users.Remove(user);
+            _appDbContext.Users?.Remove(user);
             await _appDbContext.SaveChangesAsync();
 
         }

@@ -7,12 +7,38 @@
         <link rel="stylesheet" href="/assets/styles/signin.css">
     </head>
     <body>
-        <p> Cadastro <p>
-            <form id="nome"> 
-                <input type="text" id="username" class="signinInput" autocomplete="off" placeholder="Nome de Usuário">
-                <input type="text" id="password" class="signupInput" autocomplete="off" placeholder="Senha">
-                <button type="button" id="LoginBtn"> Enviar </button>
-            </form>
+        <div class="LogarContaPainel">
+            <div class="Titulo">
+                <h1>Cadastro</h1>
+            </div>
+            <div class="Formulario">
+                <form>
+                    <div class="CampoUser">  
+                        <label for="phoneNumber">Insira seu Numero: </span> </label>   
+                        <input 
+                        required="required"
+                        type="text" 
+                        name="phone"
+                        placeholder="(99) 9999-9999"
+                        pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})" 
+                        title="Número de telefone precisa ser no formato (99) 9999-9999"
+                        id="phoneNumber" 
+                        class="userInput" 
+                        autocomplete="off"
+                        >
+
+                    </div>
+                    <div class="CampoPassword">
+                        <label for="password">Insira sua Senha: </label>
+                        <input required type="password" id="password" class="passwordInput" autocomplete="off">  
+                    </div>
+                    <div class="Botao">
+                        <button type="submit" id="LoginBtn"> Enviar </button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
             <script src="/scripts/signIn.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </body>

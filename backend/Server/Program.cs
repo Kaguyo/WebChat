@@ -32,8 +32,8 @@ app.MapPost("/users", async (UserUseCase userUseCase, User user) =>
 {
     try
     {
-        await userUseCase.CreateUser(user.Username, user.Number, user.Password);
-        return Results.Created($"/users/{user.Number}", user);
+        var userId = await userUseCase.CreateUser(user.Username, user.Number, user.Password);
+        return Results.Created($"/users/{user.Number}", userId);
     }
     catch (Exception ex)
     {
@@ -48,11 +48,11 @@ app.MapGet("/users/{number}", async (UserUseCase userUseCase, string number) =>
     return user != null ? Results.Ok(user) : Results.NotFound(new { Message = "User not found." });
 });
 
-app.MapPut("/users", (UserUseCase userUseCase, User user) =>
+app.MapPut("/users", async (UserUseCase userUseCase, User user) =>
 {
     try
     {
-        userUseCase.UpdateUser(user);
+        await userUseCase.UpdateUser(user);
         return Results.Ok(new { Message = "User updated successfully." });
     }
     catch (Exception ex)
@@ -61,11 +61,11 @@ app.MapPut("/users", (UserUseCase userUseCase, User user) =>
     }
 });
 
-app.MapDelete("/users/{number}", (UserUseCase userUseCase, int id) =>
+app.MapDelete("/users/{number}", async (UserUseCase userUseCase, int id) =>
 {
     try
     {
-        userUseCase.DeleteUser(id);
+        await userUseCase.DeleteUser(id);
         return Results.NoContent();
     }
     catch (Exception ex)

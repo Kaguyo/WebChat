@@ -1,0 +1,59 @@
+.LogarContaPainel {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #2D7359;
+    color: white;
+    position:absolute;
+    height: 750px;
+    width: 600px;
+    left: 50%;
+    transform: translate(-50%);
+    align-items: center;
+    display: flex;
+    justify-content: start;
+
+}
+.Titulo {
+
+    position: relative;
+    left: 40%;
+    bottom: 30%;
+    
+
+}
+.Formulario {
+
+    position: absolute;
+    left: 12%;
+}
+input{
+    background-color: rgba(161, 161, 161, 0.753);
+    color: white;
+    border: node;
+    width: 100%;
+    padding: 12px 12px;
+    margin: 12px 0;
+
+}
+.CampoUser {
+
+    
+    position: relative;
+    left: 25%;
+
+}
+.CampoPassword {
+    
+    position: relative;
+    left: 25%;
+    padding-top: 8%;
+
+}
+.Botao {
+
+    position: relative;
+    left: 70%;
+    padding-top: 10%;
+
+}
+
+

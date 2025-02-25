@@ -1,9 +1,8 @@
 class User {
-    constructor(Username, Number, Password, Password2){
+    constructor(Username, Number, Password){
         this.Username = Username;
         this.Number = Number;
         this.Password = Password;
-        this.Password2 = Password2;
     }  
 }
 
@@ -64,11 +63,12 @@ CadrastroBtn.onclick = async function ()
 {
     try{
 
-        const userData = new User(Username, PhoneNumber, Password, Password2);
+        const userData = new User(Username, PhoneNumber, Password);
         console.log(userData);
         console.log("USERNAME :", userData.Username);
         const response = await axios.post(`${API_URL}/users`, userData);
         console.log(response.data);
+        redirecionar();
         return response.data;
 
     } catch (error) {
