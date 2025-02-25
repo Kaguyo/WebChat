@@ -1,11 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using Server.Domain;
+
 
 namespace Server.UserRepository
 {
     public class UserRepository : IUserRepository
     {
+        
         private readonly List<User> _users = new();
 
+        
         public void Add(User user)
         {
             _users.Add(user);
