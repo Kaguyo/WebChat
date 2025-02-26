@@ -10,22 +10,19 @@
   <body>
     <div class="LogarContaPainel">
       <div class="Titulo">
-        <h1>Cadastro</h1>
+        <h1>Entre na sua conta</h1>
       </div>
       <div class="Formulario">
         <form>
-          <div class="CampoUser">
+          <div class="CampoNumber">
             <label for="phoneNumber">Insira seu Numero: </label>
             <input
               required="required"
               type="text"
-              name="phone"
-              placeholder="(99) 9999-9999"
-              pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})"
-              title="Número de telefone precisa ser no formato (99) 9999-9999"
+              placeholder="(38) 9 1234-5678"
+              pattern="\([0-9]{2}\)[\s][0-9]{1}[\s][0-9]{4}-[0-9]{4}"
+              title="Número de telefone precisa ser no formato (38) 9 1234-5678"
               id="phoneNumber"
-              class="userInput"
-              autocomplete="off"
             />
           </div>
           <div class="CampoPassword">
@@ -35,7 +32,6 @@
               type="password"
               id="password"
               class="passwordInput"
-              autocomplete="off"
             />
           </div>
           <div class="Botao">

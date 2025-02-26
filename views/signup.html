@@ -9,40 +9,49 @@
   <body>
     <div id="div1">
       <h1 id="h1CriarConta">Criar nova conta</h1>
-      <input
-        type="text"
-        id="username"
-        class="signupInput"
-        autocomplete="off"
-        placeholder="Nome de Usuário"
-      />
-      <input
-        type="text"
-        id="phoneNumber"
-        class="signupInput"
-        autocomplete="off"
-        placeholder="N° Telefone"
-      />
-      <input
-        type="text"
-        id="password"
-        class="signupInput"
-        autocomplete="off"
-        placeholder="Senha"
-      />
-      <input
-        type="text"
-        id="password2"
-        class="signupInput"
-        autocomplete="off"
-        placeholder="Repita sua Senha"
-      />
-      <div id="div2">
-        <button id="CriarContaBtn">Criar Conta</button>
-        <button id="PossuiContaBtn" onclick="redirecionar()">
-          Já possui uma Conta?
-        </button>
-      </div>
+      <form>
+        <input
+          required
+          type="text"
+          id="username"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="Nome de Usuário"
+        />
+        <input
+          required
+          type="text"
+          id="phoneNumber"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="N° Telefone"
+        />
+        <input
+          required="required"
+          type="password"
+          id="password"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="Senha"
+          pattern=".{6,}"
+          title="A senha deve conter 6 ou mais caracteres"
+        />
+        <input
+          required
+          type="password"
+          id="password2"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="Repita sua Senha"
+        />
+
+        <div id="div2">
+          <button type="submit" id="CriarContaBtn">Criar Conta</button>
+          <button type="button" id="PossuiContaBtn" onclick="redirecionar()">
+            Já possui uma Conta?
+          </button>
+        </div>
+      </form>
     </div>
 
     <script src="/scripts/signUp.js"></script>

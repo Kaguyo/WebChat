@@ -3,46 +3,77 @@ body {
 }
 
 .LogarContaPainel {
+  top: 8%;
   font-family: "Times New Roman", Times, serif;
-  background-color: #2d7359;
+  background-color: #45736a;
+  border-radius: 10px;
+  box-shadow: 0 0.5rem 1rem 1rem #194035;
   color: white;
   position: absolute;
-  height: 750px;
+  height: 650px;
   width: 600px;
   left: 50%;
   transform: translate(-50%);
   align-items: center;
-  display: flex;
+  display: grid;
   justify-content: start;
+  gap: 20px;
 }
 .Titulo {
+  position: absolute;
+  left: 150px;
+  bottom: 500px;
+  width: 300px;
+  margin: 0 auto;
+  border: solid;
+}
+h1 {
   position: relative;
-  left: 40%;
-  bottom: 30%;
+  left: 20px;
 }
 .Formulario {
-  position: absolute;
-  left: 12%;
+  position: relative;
+  border: solid;
+  height: fit-content;
+  left: 100px;
+  width: 400px;
 }
+
+.CampoNumber {
+  position: relative;
+  border: solid;
+  width: 330px;
+  left: 32px;
+}
+.CampoPassword {
+  position: relative;
+  border: solid;
+  width: 330px;
+  left: 32px;
+}
+.Botao {
+  position: relative;
+  border: solid;
+  width: 300px;
+  left: 50px;
+}
+
+button {
+  color: white;
+  width: 300px;
+  height: 40px;
+  background-color: #518c77;
+}
+
+button:hover {
+  background-color: #194035;
+}
+
 input {
   background-color: rgba(161, 161, 161, 0.753);
   color: white;
   border: node;
-  width: 100%;
+  width: 300px;
   padding: 12px 12px;
   margin: 12px 0;
-}
-.CampoUser {
-  position: relative;
-  left: 25%;
-}
-.CampoPassword {
-  position: relative;
-  left: 25%;
-  padding-top: 8%;
-}
-.Botao {
-  position: relative;
-  left: 70%;
-  padding-top: 10%;
 }
