@@ -1,9 +1,17 @@
-.LogarContaPainel {
-    font-family: 'Times New Roman', Times, serif;
+body {
     background-color: #2D7359;
+}
+
+.LogarContaPainel {
+    
+    top: 8%;
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #45736A;
+    border-radius: 10px;
+    box-shadow: 0 0.5rem 1rem 1rem #194035;
     color: white;
     position:absolute;
-    height: 750px;
+    height: 650px;
     width: 600px;
     left: 50%;
     transform: translate(-50%);
@@ -16,7 +24,7 @@
 
     position: relative;
     left: 40%;
-    bottom: 30%;
+    bottom: 40%;
     
 
 }
@@ -29,6 +37,7 @@ input{
     background-color: rgba(161, 161, 161, 0.753);
     color: white;
     border: node;
+    border-radius: 10px;
     width: 100%;
     padding: 12px 12px;
     margin: 12px 0;
