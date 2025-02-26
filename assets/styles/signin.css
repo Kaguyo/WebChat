@@ -21,12 +21,8 @@ body {
 
 }
 .Titulo {
-
-    position: relative;
-    left: 40%;
-    bottom: 40%;
-    
-
+    margin: 0 auto;
+    margin-bottom: 500px;
 }
 .Formulario {
 
