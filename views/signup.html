@@ -1,26 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Criar Conta WC</title>
-    <link rel="stylesheet" href="/assets/styles/signup.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/assets/styles/signup.css" />
+  </head>
+  <body>
     <div id="div1">
-        <h1 id="h1CriarConta">Criar nova conta</h1>
-        <input type="text" id="username" class="signupInput" autocomplete="off" placeholder="Nome de Usuário">
-        <input type="text" id="phoneNumber" class="signupInput" autocomplete="off" placeholder="N° Telefone">
-        <input type="text" id="password" class="signupInput" autocomplete="off" placeholder="Senha">
-        <input type="text" id="password2" class="signupInput" autocomplete="off" placeholder="Repita sua Senha">
-        <div id="div2">
-            <button id="CriarContaBtn">Criar Conta</button>
-            <button id="PossuiContaBtn" onclick="redirecionar()">Já possui uma Conta?</button>
-        </div>
+      <h1 id="h1CriarConta">Criar nova conta</h1>
+      <input
+        type="text"
+        id="username"
+        class="signupInput"
+        autocomplete="off"
+        placeholder="Nome de Usuário"
+      />
+      <input
+        type="text"
+        id="phoneNumber"
+        class="signupInput"
+        autocomplete="off"
+        placeholder="N° Telefone"
+      />
+      <input
+        type="text"
+        id="password"
+        class="signupInput"
+        autocomplete="off"
+        placeholder="Senha"
+      />
+      <input
+        type="text"
+        id="password2"
+        class="signupInput"
+        autocomplete="off"
+        placeholder="Repita sua Senha"
+      />
+      <div id="div2">
+        <button id="CriarContaBtn">Criar Conta</button>
+        <button id="PossuiContaBtn" onclick="redirecionar()">
+          Já possui uma Conta?
+        </button>
+      </div>
     </div>
-    
+
     <script src="/scripts/signUp.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-</body>
+  </body>
 </html>
