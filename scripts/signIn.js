@@ -8,6 +8,7 @@ class Login {
 const LoginBtn = document.getElementById("LoginBtn");
 const phonenumber = document.getElementById("phoneNumber");
 const password = document.getElementById("password");
+const errNumber = document.getElementById("ErrNumber");
 
 let PhoneNumber = "";
 let Password = "";
@@ -27,6 +28,16 @@ phonenumber.oninput = function () {
   );
   console.log(PhoneNumber);
   document.getElementById("phoneNumber").value = PhoneNumber;
+};
+
+LoginBtn.onclick = function () {
+  if (phonenumber.reportValidity()) {
+    console.log("AQUI");
+    errNumber.style.display = "none";
+  } else {
+    console.log("LA");
+    errNumber.style.display = "block";
+  }
 };
 
 const API_URL = "http://localhost:5067";
