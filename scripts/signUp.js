@@ -57,12 +57,8 @@ const API_URL = "http://localhost:5067";
 async function Cadrasta(event) {
   try {
     const userData = new User(Username, PhoneNumber, Password);
-    console.log(userData);
-    console.log("USERNAME :", userData.Username);
     const response = await axios.post(`${API_URL}/users`, userData);
-    await event.redirecionar();
-    console.log(response.data);
-    return response.data;
+    return redirecionar();
   } catch (error) {
     console.error("Error during sign up:", error);
     throw error;
@@ -107,8 +103,8 @@ function redirecionar() {
   // console.log("URL SEM HTTP: ", treatedURL);
   // console.log("PORTA: ", PORT);
 
-  if (serverJS) window.location = `http://localhost:${PORT}/signin`;
+  if (serverJS) window.location.href = `http://localhost:${PORT}/signin`;
   else if (liveServer)
-    window.location = `http://127.0.0.1:${PORT}/views/signin.html`; /* Enviando pra 127.0.0.1 apenas pra manter semantica do live server
+    window.location.href = `http://127.0.0.1:${PORT}/views/signin.html`; /* Enviando pra 127.0.0.1 apenas pra manter semantica do live server
     //                                                                                      mas poderia ser localhost. */
 }
