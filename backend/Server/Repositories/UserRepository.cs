@@ -1,13 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Server.Domain.Entities;
-using Server.UserRepository;
-
+using Server.UserRepositories;
 
 namespace Server.Repositories
 {
     public class UserRepository(AppDbContext appDbContext) : IUserRepository
     {
-
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task Create(User user)
@@ -20,7 +18,6 @@ namespace Server.Repositories
         {
             _appDbContext.Users?.Remove(user);
             await _appDbContext.SaveChangesAsync();
-
         }
 
         public async Task<List<User>> Get()

@@ -3,46 +3,39 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using Server.UserRepository;
+using Server.UserRepositories;
 
 #nullable disable
 
 namespace Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250225062113_SeedDataUser")]
-    partial class SeedDataUser
+    [Migration("20250227040832_User")]
+    partial class User
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
 
             modelBuilder.Entity("Server.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Number")
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasColumnName("number");
 
                     b.Property<string>("Password")
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasColumnName("password");
 
                     b.Property<string>("Username")
-                        .HasColumnType("text")
+                        .HasColumnType("TEXT")
                         .HasColumnName("username");
 
                     b.HasKey("Id");

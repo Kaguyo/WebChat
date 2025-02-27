@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Server.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedDataUser : Migration
+    public partial class User : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,11 +14,11 @@ namespace Server.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    username = table.Column<string>(type: "text", nullable: true),
-                    number = table.Column<string>(type: "text", nullable: true),
-                    password = table.Column<string>(type: "text", nullable: true)
+                    id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    username = table.Column<string>(type: "TEXT", nullable: true),
+                    number = table.Column<string>(type: "TEXT", nullable: true),
+                    password = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

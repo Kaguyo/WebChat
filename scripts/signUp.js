@@ -11,6 +11,7 @@ const username = document.getElementById("username");
 const phoneNumber = document.getElementById("phoneNumber");
 const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
+const form = document.getElementById("Form");
 
 let Username = "";
 let PhoneNumber = "";
@@ -53,20 +54,22 @@ password2.oninput = function () {
 
 const API_URL = "http://localhost:5067";
 
-CadrastroBtn.onsubmit = async function () {
+async function Cadrasta(event) {
   try {
     const userData = new User(Username, PhoneNumber, Password);
     console.log(userData);
     console.log("USERNAME :", userData.Username);
     const response = await axios.post(`${API_URL}/users`, userData);
+    await event.redirecionar();
     console.log(response.data);
-    redirecionar();
     return response.data;
   } catch (error) {
     console.error("Error during sign up:", error);
     throw error;
   }
-};
+}
+
+form.addEventListener("submit", Cadrasta);
 
 function redirecionar() {
   let urlAtual = window.location.href; // URL completo
