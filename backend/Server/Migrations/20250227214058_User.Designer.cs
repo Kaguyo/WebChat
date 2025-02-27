@@ -10,7 +10,7 @@ using Server.UserRepositories;
 namespace Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250227040832_User")]
+    [Migration("20250227214058_User")]
     partial class User
     {
         /// <inheritdoc />
@@ -26,6 +26,14 @@ namespace Server.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("id");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("firstname");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("lastname");
+
                     b.Property<string>("Number")
                         .HasColumnType("TEXT")
                         .HasColumnName("number");
@@ -33,6 +41,9 @@ namespace Server.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("TEXT")
                         .HasColumnName("password");
+
+                    b.Property<string>("ProfileImg")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
                         .HasColumnType("TEXT")
@@ -46,9 +57,12 @@ namespace Server.Migrations
                         new
                         {
                             Id = 1,
-                            Number = "38123456789",
-                            Password = "123456",
-                            Username = "Fabricio"
+                            FirstName = "",
+                            LastName = "",
+                            Number = "",
+                            Password = "",
+                            ProfileImg = "",
+                            Username = ""
                         });
                 });
 #pragma warning restore 612, 618

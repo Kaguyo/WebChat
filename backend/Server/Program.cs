@@ -44,7 +44,7 @@ app.MapPost(
     {
         try
         {
-            var userId = await userUseCase.CreateUser(user.Username, user.Number, user.Password);
+            var userId = await userUseCase.CreateUser(user);
             return Results.Created($"/users/{user.Number}", userId);
         }
         catch (Exception ex)
@@ -54,14 +54,14 @@ app.MapPost(
     }
 );
 
-app.MapGet(
-    "/users/{number}",
-    async (UserUseCase userUseCase, string number) =>
+app.MapPost(
+    "/users/login",
+    async (UserUseCase userUseCase, User user) =>
     {
-        var user = await userUseCase.GetUserIdByNumber(number);
-        return user != null
-            ? Results.Ok(user)
-            : Results.NotFound(new { Message = "User not found." });
+        var login = await userUseCase.GetUserByNumber(user.Number, user.Password);
+        return login != null
+            ? Results.Ok(login.Username)
+            : Results.NotFound(new { Message = "Number or password wrong" });
     }
 );
 

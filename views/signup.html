@@ -9,7 +9,23 @@
   <body>
     <div id="div1">
       <h1 id="h1CriarConta">Criar nova conta</h1>
-      <form id="Form" target="_self">
+      <form id="Form">
+        <input
+          required
+          type="text"
+          id="firstname"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="Nome"
+        />
+        <input
+          required
+          type="text"
+          id="lastname"
+          class="signupInput"
+          autocomplete="off"
+          placeholder="Sobrenome"
+        />
         <input
           required
           type="text"
@@ -22,6 +38,8 @@
           required
           type="text"
           id="phoneNumber"
+          pattern="\([0-9]{2}\)[\s][0-9]{1}[\s][0-9]{4}-[0-9]{4}"
+          title="Número de telefone precisa ser no formato (38) 9 1234-5678"
           class="signupInput"
           autocomplete="off"
           placeholder="N° Telefone"

@@ -30,9 +30,14 @@ namespace Server.Repositories
             return await _appDbContext.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<User?> Get(string number)
+        public Task<User?> GetNumber(string number)
         {
             return _appDbContext.Users.Where(x => x.Number == number).FirstOrDefaultAsync();
+        }
+
+        public Task<User?> GetPassword(string password)
+        {
+            return _appDbContext.Users.Where(x => x.Password == password).FirstOrDefaultAsync();
         }
 
         public async Task Update(User user)

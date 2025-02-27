@@ -1,25 +1,27 @@
 using Server.Domain.Entities;
 using Server.Repositories;
 
-
-
 namespace Server.UseCases
 {
-
     public class UserUseCase(IUserRepository userRepository)
     {
         private readonly IUserRepository _userRepository = userRepository;
 
-        public async Task<int> CreateUser(string username, string number, string password)
+        public async Task<int> CreateUser(User user)
         {
-            var user = new User { Username = username, Number = number, Password = password };
+            var CreateUser = new User
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+                Number = user.Number,
+                Password = user.Password,
+            };
 
-            ValidateUser(user);
+            ValidateUser(CreateUser);
             Console.WriteLine("Validação de usuario concluida!");
-            await _userRepository.Create(user);
-            return user.Id;
-
-
+            await _userRepository.Create(CreateUser);
+            return CreateUser.Id;
         }
 
         public async Task<User?> GetUserId(int id)
@@ -27,9 +29,21 @@ namespace Server.UseCases
             return await _userRepository.Get(id);
         }
 
-        public async Task<User?> GetUserIdByNumber(string number){
-            return await _userRepository.Get(number);
+        public async Task<User?> GetUserByNumber(string number, string password)
+        {
+            var loginId = await _userRepository.GetNumber(number);
+            var loginID2 = await _userRepository.GetPassword(password);
+
+            if (loginId == loginID2)
+            {
+                return loginId;
+            }
+            else
+            {
+                return null;
+            }
         }
+
         public async Task UpdateUser(User user)
         {
             await _userRepository.Update(user);
@@ -43,8 +57,15 @@ namespace Server.UseCases
                 await _userRepository.Delete(user);
             }
         }
+
         private static void ValidateUser(User user)
         {
+            if (string.IsNullOrWhiteSpace(user.FirstName))
+                throw new ArgumentException("First Name is required.");
+
+            if (string.IsNullOrWhiteSpace(user.LastName))
+                throw new ArgumentException("Last Name is required.");
+
             if (string.IsNullOrWhiteSpace(user.Username))
                 throw new ArgumentException("Username is required.");
 
@@ -58,6 +79,4 @@ namespace Server.UseCases
                 throw new ArgumentException("Password must be at least 6 characters long.");
         }
     }
-
-
 }

@@ -30,9 +30,12 @@ namespace Server.UserRepositories
                     new User
                     {
                         Id = 1,
-                        Username = "Fabricio",
-                        Number = "38123456789",
-                        Password = "123456",
+                        FirstName = "",
+                        LastName = "",
+                        Username = "",
+                        Number = "",
+                        Password = "",
+                        ProfileImg = "",
                     }
                 );
         }

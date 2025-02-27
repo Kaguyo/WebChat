@@ -16,9 +16,12 @@ namespace Server.Migrations
                 {
                     id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    firstname = table.Column<string>(type: "TEXT", nullable: true),
+                    lastname = table.Column<string>(type: "TEXT", nullable: true),
                     username = table.Column<string>(type: "TEXT", nullable: true),
                     number = table.Column<string>(type: "TEXT", nullable: true),
-                    password = table.Column<string>(type: "TEXT", nullable: true)
+                    password = table.Column<string>(type: "TEXT", nullable: true),
+                    ProfileImg = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -27,8 +30,8 @@ namespace Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "id", "number", "password", "username" },
-                values: new object[] { 1, "38123456789", "123456", "Fabricio" });
+                columns: new[] { "id", "firstname", "lastname", "number", "password", "ProfileImg", "username" },
+                values: new object[] { 1, "", "", "", "", "", "" });
         }
 
         /// <inheritdoc />

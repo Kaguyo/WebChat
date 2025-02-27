@@ -3,12 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Server.Domain.Entities
 {
-    public class User() 
+    public class User()
     {
         [Column("id")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Column("firstname")]
+        public string? FirstName { get; set; }
+
+        [Column("lastname")]
+        public string? LastName { get; set; }
 
         [Column("username")]
         public string? Username { get; set; }
@@ -19,5 +25,7 @@ namespace Server.Domain.Entities
         [Column("password")]
         public string? Password { get; set; }
 
+        [Column("profileimg")]
+        public string? ProfileImg { get; set; }
     }
 }
