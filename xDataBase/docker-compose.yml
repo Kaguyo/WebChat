@@ -1,0 +1,11 @@
+services:
+  connect-pg:
+    image: bitnami/postgresql:latest
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=connect
+
+# DATABASE_URL="postgresql://docker:docker@localhost:5433/connect"

@@ -1,3 +1,2 @@
-/backend/bin/
-/backend/obj/
-settings.json
+*obj
+*bin

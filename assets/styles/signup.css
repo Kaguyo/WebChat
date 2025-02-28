@@ -1,25 +1,26 @@
 #h1CriarConta {
-    font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 #div1 {
-    position: absolute;
-    width: 250px;
-    display: grid;
-    height: 180px;
-    left: 50%;
-    transform: translate(-50%);
-} 
+  position: absolute;
+  width: 250px;
+  display: grid;
+  height: 180px;
+  left: 50%;
+  transform: translate(-50%);
+}
 #div2 {
-    position: relative;
-    margin-top: 20px;
-    width: 250px;
-    height:100px;
-    display: grid;
-    gap: 10%;
-    left: 50%;
-    transform: translate(-50%);
+  position: relative;
+  margin-top: 20px;
+  width: 250px;
+  height: 100px;
+  display: grid;
+  gap: 10%;
+  left: 50%;
+  transform: translate(-50%);
 }
 .signupInput {
-    height: 30px;
-    font-size: 20px;
+  height: 30px;
+  font-size: 20px;
+  border: 1px solid black;
 }

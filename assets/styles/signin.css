@@ -1,0 +1,69 @@
+body {
+  background-color: #2d7359;
+}
+
+.LogarContaPainel {
+  top: 8%;
+  font-family: "Times New Roman", Times, serif;
+  background-color: #45736a;
+  border-radius: 10px;
+  box-shadow: 0 0.5rem 1rem 1rem #194035;
+  color: white;
+  margin: 0 auto;
+  height: 650px;
+  width: 600px;
+  align-items: center;
+  justify-content: center;
+  display: grid;
+}
+h1 {
+  margin-bottom: 100px;
+}
+
+.ErrNumber {
+  position: relative;
+  top: -20px;
+  display: none;
+  font-size: 13px;
+  color: red;
+}
+
+.ErrPassword {
+  display: none;
+
+  font-size: 13px;
+  color: red;
+}
+
+.CampoNumber {
+  width: 330px;
+}
+.CampoPassword {
+  width: 330px;
+}
+
+form {
+  display: grid;
+  justify-items: center;
+  margin-bottom: 100px;
+}
+button {
+  margin-top: 80px;
+  color: white;
+  width: 300px;
+  height: 40px;
+  background-color: #518c77;
+}
+
+button:hover {
+  background-color: #194035;
+}
+
+input {
+  background-color: rgba(161, 161, 161, 0.753);
+  color: white;
+  border: node;
+  width: 300px;
+  padding: 12px 12px;
+  margin: 12px 0;
+}
