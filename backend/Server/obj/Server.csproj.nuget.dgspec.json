@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\07346\\codes\\WebChat\\backend\\Server\\Server.csproj": {}
+    "/workspaces/WebChat/backend/Server/Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\07346\\codes\\WebChat\\backend\\Server\\Server.csproj": {
+    "/workspaces/WebChat/backend/Server/Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\07346\\codes\\WebChat\\backend\\Server\\Server.csproj",
+        "projectUniqueName": "/workspaces/WebChat/backend/Server/Server.csproj",
         "projectName": "Server",
-        "projectPath": "C:\\Users\\07346\\codes\\WebChat\\backend\\Server\\Server.csproj",
-        "packagesPath": "C:\\Users\\07346\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\07346\\codes\\WebChat\\backend\\Server\\obj\\",
+        "projectPath": "/workspaces/WebChat/backend/Server/Server.csproj",
+        "packagesPath": "/home/vscode/.nuget/packages/",
+        "outputPath": "/workspaces/WebChat/backend/Server/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\07346\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/vscode/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -99,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\07346\\dotnet-sdk-8\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

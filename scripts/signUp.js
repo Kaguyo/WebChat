@@ -45,42 +45,9 @@ password2.addEventListener("input", (event) => {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-<<<<<<< HEAD
-CadrastroBtn.onclick = function (){
-    try {
-        const objetoUsuario = new User(Username, PhoneNumber, Password, Password2);
-        const jsonUsuario = JSON.stringify(objetoUsuario);
-        console.log(objetoUsuario);
-        console.log(jsonUsuario);
-        fetch("http://localhost:5000/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: jsonUsuario
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Dados recebidos:", data);
-        })
-        .catch(error => {
-            console.log("Erro ao enviar dados:", error);
-        });
-    } catch(err){
-        console.log(`Error. User wasn't created. Error: ${err.message}`);
-        console.log(`Error details: ${err}`);
-    }
-}
-RedirecionarBtn.onclick = function (){
-    let urlAtual = window.location.href; // URL completo
-    let treatedURL; // Usado pra receber PORT apartir da PORT localizada no URL
-    let PORT = "";
-    let collectingPort = true; // Bool de permissao para copiar PORT
-=======
   try {
     const ResposeData = await Cadrasta();
     console.log(ResposeData);
->>>>>>> v2.0
 
     if (ResposeData != null) {
       let urlAtual = window.location.href; // URL completo
