@@ -9,6 +9,9 @@ const server = http.createServer((req, res) => {
     if (req.url === '/') {
         filePath = path.join(__dirname, '..', 'views', 'index.html');
 
+    } else if (req.url === '/index'){
+        filePath = path.join(__dirname, '..', 'views', 'index.html')
+
     } else if (req.url === '/signup'){
         filePath = path.join(__dirname, '..', 'views', 'signup.html')
 

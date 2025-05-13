@@ -22,7 +22,72 @@ password.addEventListener("input", (event) => {
   Password = event.target.value;
 });
 
-// form.addEventListener("submit", LoginFunction);
+
+// form.addEventListener("submit", (event) => {
+//   event.preventDefault();
+//   Login();
+// });
+
+// Formata o numero de telefone para o padrao brasileiro
+phonenumber.oninput = function () {
+  console.log(Number);
+  Number = Number.toString().replace(
+    /(\d{2})(\d{1})(\d{4})(\d{4})/,
+    "($1) $2 $3-$4"
+  );
+
+  console.log(Number);
+  document.getElementById("phoneNumber").value = Number;
+};
+
+// Faz aparecer a mensagem de erro em baixo do number
+phonenumber.onkeyup = function () {
+  if (phonenumber.reportValidity()) {
+    errNumber.style.display = "none";
+  } else {
+    errNumber.style.display = "block";
+  }
+};
+
+// function Login(){
+// axios.post(API_URL, {
+//   Number: Number,
+//   Password: Password
+// }).then(function(response){
+//   if(response.data.token){
+//     localStorage.setItem('token', response.data.token);
+//     window.alert("Login realizado com sucesso, redirecionando...");
+
+//     setTimeout(() =>{
+//       window.location.href = `http://localhost:2200/index`;
+//     }, 4000);
+//   } else {
+//     window.alert("Token nao recebido :( ")
+//   }
+// }).catch (function(error){
+//   console.error(error);
+//   window.alert("Numero ou senha invalidos.")
+// })
+// }
+
+// Funcao para enviar dados do login para o backend
+async function LoginFunction() {
+  try {
+    const userLogin = new Login(Number, Password);
+    console.log(userLogin);
+    const response = await axios.post(`${API_URL}/api/auth/login`, userLogin);
+    console.log("Apos a requisicao: ", response.data.token);
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token)
+      window.alert("Login realizado com sucesso!!!")
+    }
+    return response.data;
+  } catch (error) {
+    window.alert("Numero ou senha errada!");
+    console.error("Error during sign up:", error);
+    throw error;
+  }
+}
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -77,81 +142,3 @@ form.addEventListener("submit", async (event) => {
     throw error;
   }
 });
-
-// Formata o numero de telefone para o padrao brasileiro
-phonenumber.oninput = function () {
-  console.log(Number);
-  Number = Number.toString().replace(
-    /(\d{2})(\d{1})(\d{4})(\d{4})/,
-    "($1) $2 $3-$4"
-  );
-
-  console.log(Number);
-  document.getElementById("phoneNumber").value = Number;
-};
-
-// Faz aparecer a mensagem de erro em baixo do number
-phonenumber.onkeyup = function () {
-  if (phonenumber.reportValidity()) {
-    errNumber.style.display = "none";
-  } else {
-    errNumber.style.display = "block";
-  }
-};
-
-// Funcao para enviar dados do login para o backend
-async function LoginFunction() {
-  try {
-    const userLogin = new Login(Number, Password);
-    console.log(userLogin);
-    const response = await axios.post(`${API_URL}/users/login/`, userLogin);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    window.alert("Numbero ou senha errada!");
-    console.error("Error during sign up:", error);
-    throw error;
-  }
-}
-
-// LoginBtn.onclick = () => {
-//   let urlAtual = window.location.href; // URL completo
-//   let treatedURL; // Usado pra receber PORT apartir da PORT localizada no URL
-//   let PORT = "";
-//   let collectingPort = true; // Bool de permissao para copiar PORT
-
-//   let serverJS = false; // Bool pra decisao de redirecionamento
-//   let liveServer = false; // Bool pra decisao de redirecionamento
-
-//   // Verifica URL da que pagina rodando, e pega a PORT dinamicamente
-//   if (urlAtual.startsWith("http://localhost:")) {
-//     treatedURL = urlAtual.slice(17);
-//     for (i = 0; i < treatedURL.length; i++) {
-//       if (treatedURL[i] != "/" && collectingPort) {
-//         PORT += treatedURL[i];
-//       } else {
-//         collectingPort = false; // Cancela coleta
-//       }
-//     }
-//     serverJS = true;
-//   } else if (urlAtual.startsWith("http://127.0.0.1:")) {
-//     treatedURL = urlAtual.slice(17);
-//     for (i = 0; i < treatedURL.length; i++) {
-//       if (treatedURL[i] != "/" && collectingPort) {
-//         PORT += treatedURL[i];
-//       } else {
-//         collectingPort = false; // Cancela coleta
-//       }
-//     }
-//     liveServer = true;
-//   }
-
-//   // console.log("URL COMPLETO: ", urlAtual);
-//   // console.log("URL SEM HTTP: ", treatedURL);
-//   // console.log("PORTA: ", PORT);
-
-//   if (serverJS) window.location.href = `http://localhost:${PORT}/index`;
-//   else if (liveServer)
-//     window.location.href = `http://127.0.0.1:${PORT}/views/index.html`; /* Enviando pra 127.0.0.1 apenas pra manter semantica do live server
-//       //                                                                                      mas poderia ser localhost. */
-// };
